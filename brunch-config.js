@@ -2,7 +2,16 @@ exports.config = {
   // See http://brunch.io/#documentation for docs.
   files: {
     javascripts: {
-      joinTo: "js/app.js"
+      joinTo: "js/app.js",
+      order: {
+        before: [
+          "node_modules/jquery/dist/jquery.js"
+        ],
+        after: [
+          "web/static/vendor/semantic.js"
+        ]
+      }
+
 
       // To use a separate vendor.js bundle, specify two files path
       // http://brunch.io/docs/config#-files-
@@ -15,6 +24,8 @@ exports.config = {
       // order: {
       //   before: [
       //     "web/static/vendor/js/jquery-2.1.1.js",
+      //   ]
+          // "web/static/vendor/semantic.js"
       //     "web/static/vendor/js/bootstrap.min.js"
       //   ]
       // }
@@ -64,6 +75,10 @@ exports.config = {
   },
 
   npm: {
-    enabled: true
+    enabled: true,
+    globals: {
+      jQuery: 'jquery',
+      $: 'jquery'
+    }
   }
-};
+}
