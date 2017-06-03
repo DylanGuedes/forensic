@@ -57,8 +57,23 @@ socket.connect()
 var topic = "alerts:lobby"
 let channel = socket.channel(topic, {})
 
+function humanize(str) {
+  var frags = str.split('_');
+  var i;
+  for (i=0; i<frags.length; i++) {
+    frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+  }
+  return frags.join(' ');
+}
+
 channel.on('new_report', payload => {
   console.log(payload)
+  $('#alerts').append("\
+    <a class='ui red image label'>\
+      "+payload["capability"]+"\
+      <div class='detail'>"+payload["value"]+"</div>\
+    </a>\
+  ");
 });
 
 channel.join()

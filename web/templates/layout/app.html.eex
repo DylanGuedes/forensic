@@ -11,27 +11,14 @@
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
-  <div class="ui menu">
-    <div class="ui container">
-      <div class="header item">FORENSIC</div>
-      <%= link("Alerts", to: "/alerts", class: "item") %>
-      <div class="right menu">
-        <div class="item">
-          <div class="ui action left icon input">
-            <i class="search icon"></i>
-            <input type="text" placeholder="Search">
-            <button class="ui button">Submit</button>
-          </div>
-        </div>
-        <a class="item">Link</a>
-      </div>
-    </div>
-  </div>
-
   <body>
 
+    <%= render "header.html", conn: @conn %>
+
     <main role="main">
-      <%= render @view_module, @view_template, assigns %>
+      <div class="ui container">
+        <%= render @view_module, @view_template, assigns %>
+      </div>
     </main>
 
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

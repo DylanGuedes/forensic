@@ -1,0 +1,13 @@
+<div class="ui segment">
+  <a class="ui green ribbon label">New</a>
+  <h1 class="ui header">Streams</h1>
+
+  <div class="ui labeled button" tabindex="0">
+    <div class="ui blue button">
+      New Stream
+    </div>
+    <a class="ui basic blue left pointing label">
+      <%= length(@streams) %>
+    </a>
+  </div>
+</div>

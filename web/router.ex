@@ -18,6 +18,8 @@ defmodule Forensic.Router do
 
     get "/", PageController, :index
     get "/alerts", AlertController, :index
+    get "/streams", StreamController, :index
+    resources "/changelog", ChangelogController
   end
 
   # Other scopes may use custom stacks.
