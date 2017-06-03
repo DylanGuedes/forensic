@@ -1,5 +1,5 @@
 <div class="ui vertical stripe segment">
-  <div class="ui middle aligned stackable grid container">
+  <div class="ui middle center aligned stackable grid container">
     <div class="row">
       <div class="eight wide column">
         <h1 class="ui header"><%= @stream.name %></h1>
@@ -8,26 +8,45 @@
     </div>
   </div>
 
-  <div class="ui vertical steps">
-    <div class="completed step">
-      <i class="truck icon"></i>
-      <div class="content">
-        <div class="title">Shipping</div>
-        <div class="description">Choose your shipping options</div>
-      </div>
+  <div class="ui grid">
+    <div class="eight wide column">
     </div>
-    <div class="completed step">
-      <i class="credit card icon"></i>
-      <div class="content">
-        <div class="title">Billing</div>
-        <div class="description">Enter billing information</div>
+    <div class="six wide column">
+      <h2 class="ui header">Pipeline</h2>
+      <div class="ui fluid vertical steps">
+        <div class="step">
+          <i class="eyedropper icon"></i>
+          <div class="content">
+            <div class="title">Kafka Ingestion</div>
+            <div class="description">Ingest from Kafka's topic</div>
+          </div>
+        </div>
+
+        <div class="disabled step">
+          <div class="content">
+            <div class="title">No store action detected</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <i class="industry icon"></i>
+          <div class="content">
+            <div class="title">Entities cast</div>
+            <div class="description">Normalize Kafka's input</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <i class="sitemap icon"></i>
+          <div class="content">
+            <div class="title">Parquet publish</div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="active step">
-      <i class="info icon"></i>
-      <div class="content">
-        <div class="title">Confirm Order</div>
-        <div class="description">Verify order details</div>
+      <div class="ui inverted center aligned segment">
+        <button class="ui inverted button">Edit Pipeline</button>
+        <button class="ui inverted violet button">Flush</button>
+        <button class="ui inverted teal button">Notify Shock</button>
       </div>
     </div>
   </div>
