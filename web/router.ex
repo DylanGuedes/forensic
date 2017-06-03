@@ -18,6 +18,7 @@ defmodule Forensic.Router do
 
     get "/", PageController, :index
     get "/alerts", AlertController, :index
+    get "/streams/flush/:id", StreamController, :flush
     resources "/changelog", ChangelogController
     resources "/streams", StreamController
   end

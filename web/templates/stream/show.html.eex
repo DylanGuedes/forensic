@@ -11,7 +11,7 @@
   <div class="ui grid">
     <div class="eight wide column">
     </div>
-    <div class="six wide column">
+    <div class="seven wide column">
       <h2 class="ui header">Pipeline</h2>
       <div class="ui fluid vertical steps">
         <div class="step">
@@ -45,7 +45,7 @@
       </div>
       <div class="ui inverted center aligned segment">
         <button class="ui inverted button">Edit Pipeline</button>
-        <button class="ui inverted violet button">Flush</button>
+        <%= link("Flush Pipeline", to: stream_path(@conn, :flush, @stream.id), class: "ui inverted violet button") %>
         <button class="ui inverted teal button">Notify Shock</button>
       </div>
     </div>
