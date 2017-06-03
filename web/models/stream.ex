@@ -29,12 +29,13 @@ defmodule Forensic.Stream do
   schema "streams" do
     field :name, :string
     field :description, :string
+    many_to_many :stages, Forensic.Stage, join_through: Forensic.StreamStage
 
     timestamps()
   end
 
   @spec changeset(t, map) :: t
-  def changeset(struct, params \\ :empty) do
+  def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:name, :description])
     |> validate_required([:name])

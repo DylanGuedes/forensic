@@ -34,7 +34,7 @@ defmodule Forensic.StreamController do
   end
 
   def flush(conn, params) do
-    # KafkaEx.produce("new_pipeline_instruction", 0, "flush;{}")
+    KafkaEx.produce("new_pipeline_instruction", 0, "flush;{}")
     show(conn, params)
   end
 end

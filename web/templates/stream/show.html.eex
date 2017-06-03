@@ -46,7 +46,7 @@
       <div class="ui inverted center aligned segment">
         <button class="ui inverted button">Edit Pipeline</button>
         <%= link("Flush Pipeline", to: stream_path(@conn, :flush, @stream.id), class: "ui inverted violet button") %>
-        <button class="ui inverted teal button">Notify Shock</button>
+        <button class="ui inverted teal button">Shock injection</button>
       </div>
     </div>
   </div>
