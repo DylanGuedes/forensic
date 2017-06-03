@@ -1,0 +1,36 @@
+<div class="ui middle center aligned grid segment">
+  <div class="four wide column">
+  </div>
+  <div class="four wide column">
+    <h1 class="ui teal image header">
+      <div class="content">
+        New Stream
+      </div>
+    </h1>
+    <%= form_for @changeset, stream_path(@conn, :create), [class: "ui form"], fn f -> %>
+      <%= if f.errors != [] do %>
+        <div class="ui error message">
+          <p>Wrong data! :(</p>
+        </div>
+      <% end %>
+
+      <div class="ui field">
+        <div class="ui input">
+          <%= text_input f, :name, placeholder: "name" %>
+        </div>
+        <%= error_tag f, :name %>
+      </div>
+
+      <div class="ui field">
+        <div class="ui input">
+          <%= textarea  f, :description, placeholder: "description" %>
+        </div>
+        <%= error_tag f, :description %>
+      </div>
+
+      <%= submit "Create stream", class: "ui fluid teal submit button" %>
+    <% end %>
+  </div>
+  <div class="four wide column">
+  </div>
+</div>
