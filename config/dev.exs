@@ -7,7 +7,7 @@ use Mix.Config
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
 config :forensic, Forensic.Endpoint,
-  http: [port: 4000],
+  http: [port: 4545],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,

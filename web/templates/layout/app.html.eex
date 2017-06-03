@@ -11,6 +11,23 @@
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
+  <div class="ui menu">
+    <div class="ui container">
+      <div class="header item">FORENSIC</div>
+      <%= link("Alerts", to: "/alerts", class: "item") %>
+      <div class="right menu">
+        <div class="item">
+          <div class="ui action left icon input">
+            <i class="search icon"></i>
+            <input type="text" placeholder="Search">
+            <button class="ui button">Submit</button>
+          </div>
+        </div>
+        <a class="item">Link</a>
+      </div>
+    </div>
+  </div>
+
   <body>
 
     <main role="main">
