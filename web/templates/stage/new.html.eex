@@ -1,0 +1,75 @@
+<div class="ui middle center aligned grid segment">
+  <div class="four wide column">
+  </div>
+  <div class="four wide column">
+    <h1 class="ui teal image header">
+      <div class="content">
+        New Stage
+      </div>
+    </h1>
+    <%= form_for @changeset, stage_path(@conn, :create), [class: "ui form"], fn f -> %>
+      <%= if f.errors != [] do %>
+        <div class="ui error message">
+          <p>Wrong data! :(</p>
+        </div>
+      <% end %>
+
+      <div class="ui field">
+        <div class="ui input">
+          <%= text_input f, :title, placeholder: "title" %>
+        </div>
+        <%= error_tag f, :title %>
+      </div>
+
+      <div class="ui field">
+        <div class="ui input">
+          <%= textarea  f, :description, placeholder: "description" %>
+        </div>
+        <%= error_tag f, :description %>
+      </div>
+
+      <div class="ui field">
+        <div class="ui input">
+          <%= textarea  f, :script, placeholder: "script" %>
+        </div>
+        <%= error_tag f, :script %>
+      </div>
+
+      <div class="field">
+        <div class="ui inline dropdown">
+          <%= hidden_input f, :step %>
+          <div class="text">
+            Stage step
+          </div>
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            <div class="item" data-value="ingestion">
+              <i class="eyedropper icon"></i>
+              Ingestion
+            </div>
+            <div class="item" data-value="store">
+              <i class="download icon"></i>
+              Store
+            </div>
+            <div class="item" data-value="process">
+              <i class="industry icon"></i>
+              Process
+            </div>
+            <div class="item" data-value="publish">
+              <i class="sitemap icon"></i>
+              Publish
+            </div>
+          </div>
+        </div>
+      </div>
+      <%= submit "Create stage", class: "ui fluid teal submit button" %>
+    <% end %>
+  </div>
+
+  <div class="four wide column"></div>
+</div>
+
+<div class="ui bottom attached warning message">
+  <i class="icon help"></i>
+  Confused? Read about stages <%= link("here", to: stage_path(@conn, :index) ) %>.
+</div>

@@ -1,0 +1,35 @@
+<div class="ui segment">
+  <a class="ui green ribbon label" data-content="New feature! Added recently">New</a>
+  <h1 class="ui header">Stages</h1>
+
+  <div class="ui left dividing rail">
+    <p class="ui segment">
+      Stages are used to compose <%= link("streams", to: stream_path(@conn, :index)) %>.
+      Forensic currently supports <strong>4</strong> steps: <strong>ingestion, store, analysis, and publish</strong>.
+      After composing a stream, you need to inject it to Shock. For some stages you need to explictly call
+      <strong>flush</strong>.
+    </p>
+  </div>
+
+  <div class="ui middle aligned selection list">
+    <%= for st <- @stages do %>
+      <div class="item">
+        <div class="right floated content">
+          <%= link("Remove", to: stage_path(@conn, :delete, st.id), method: :delete, class: "ui button red") %>
+        </div>
+        <i class="<%= Forensic.Stage.step_icons(st.step) %> icon"></i>
+        <div class="content">
+          <%= link(st.title, to: stage_path(@conn, :show, st.id), class: "header") %>
+          Last Seen 2 days ago
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="ui labeled button" tabindex="0">
+    <%= link("New Stage", to: "/stages/new", class: "ui blue button") %>
+    <a class="ui basic blue left pointing label">
+      <%= length(@stages) %>
+    </a>
+  </div>
+</div>

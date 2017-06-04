@@ -21,6 +21,7 @@ defmodule Forensic.Router do
     get "/streams/flush/:id", StreamController, :flush
     resources "/changelog", ChangelogController
     resources "/streams", StreamController
+    resources "/stages", StageController
   end
 
   # Other scopes may use custom stacks.

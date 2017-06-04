@@ -19,3 +19,13 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 import socket from "./socket"
+
+import $ from 'jquery';
+
+$(document).ready(function() {
+  $('.ui.dropdown')
+    .dropdown();
+
+  $('.ui.green.ribbon.label')
+    .popup();
+});

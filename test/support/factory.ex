@@ -10,7 +10,8 @@ defmodule Forensic.Factory do
   def stage_factory do
     %Forensic.Stage{
       title: "ingestion stage",
-      description: "nice stage"
+      description: "nice stage",
+      step: "processing"
     }
   end
 end

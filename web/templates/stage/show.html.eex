@@ -1,0 +1,14 @@
+
+<h1 class="ui header">
+  <i class="big eyedropper icon"></i>
+  <%= @stage.title %>
+</h1>
+
+<div class="ui segment">
+  <div class="title">
+    Script
+  </div>
+  <div class="content">
+    <%= @stage.script %>
+  </div>
+</div>

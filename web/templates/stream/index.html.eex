@@ -1,26 +1,28 @@
 <div class="ui segment">
-  <a class="ui green ribbon label">New</a>
+  <a class="ui green ribbon label" data-content="New feature! Added recently">New</a>
   <h1 class="ui header">Streams</h1>
 
-  <%= for st <- @streams do %>
-    <div class="ui card">
-      <div class="content">
-        <%= link(st.name, to: stream_path(@conn, :show, st.id), class: "header") %>
 
-        <div class="meta">
-          <a>Last Seen 2 days ago</a>
+  <div class="ui divided items">
+    <%= for st <- @streams do %>
+      <div class="item">
+        <div class="ui tiny image">
         </div>
-        <div class="description">
-          <%= st.description %>
+        <div class="content">
+          <%= link(st.name, to: stream_path(@conn, :show, st.id), class: "header") %>
+          <div class="meta">
+            <span>Kafka</span>
+          </div>
+          <div class="description">
+            <p><%= st.description %></p>
+          </div>
+          <div class="extra">
+            <a class="ui basic label">Kafka</a>
+          </div>
         </div>
       </div>
-        <div class="extra content">
-          <a class="ui basic label">Kafka</a>
-        </div>
-      </div>
-    </div>
-
-  <% end %>
+    <% end %>
+  </div>
 
   <div class="ui labeled button" tabindex="0">
     <%= link("New Stream", to: "/streams/new", class: "ui blue button") %>
