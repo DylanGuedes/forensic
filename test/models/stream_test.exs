@@ -24,7 +24,7 @@ defmodule Forensic.StreamTest do
     |> Enum.map(lamb)
   end
 
-  test "associate with setup" do
+  test "associate with stage" do
     stream = insert(:stream, %{name: "nicename"})
     stage = insert(:stage)
 

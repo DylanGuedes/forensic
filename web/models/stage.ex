@@ -2,14 +2,15 @@ defmodule Forensic.Stage do
   use Forensic.Web, :model
   use Ecto.Schema
 
-  def changeset() do
-  end
+  alias Forensic.MirrorParam, as: MP
 
   schema "stages" do
     field :title, :string
     field :description, :string
     field :script, :string
     field :step, :string
+    field :shock_identifier, :string
+    has_many :params, MP
     many_to_many :streams, Forensic.Stream, join_through: Forensic.StreamStage
 
     timestamps()
@@ -23,8 +24,8 @@ defmodule Forensic.Stage do
 
   def changeset(struct, params \\ :empty) do
     struct
-    |> cast(params, [:title, :description, :step])
-    |> validate_required([:title, :step])
+    |> cast(params, [:title, :description, :step, :shock_identifier, :script])
+    |> validate_required([:title, :step, :shock_identifier])
     |> validate_length(:title, [min: 3, max: 120])
     |> validate_length(:description, [max: 2000])
     |> validate_length(:script, [max: 2000])

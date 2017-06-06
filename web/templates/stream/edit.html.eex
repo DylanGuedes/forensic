@@ -4,10 +4,10 @@
   <div class="four wide column">
     <h1 class="ui teal image header">
       <div class="content">
-        New Stream
+        Stream editing
       </div>
     </h1>
-    <%= form_for @changeset, stream_path(@conn, :create), [class: "ui form"], fn f -> %>
+    <%= form_for @changeset, stream_path(@conn, :update, @stream), [class: "ui form"], fn f -> %>
       <%= if f.errors != [] do %>
         <div class="ui error message">
           <p>Wrong data! :(</p>
@@ -32,7 +32,7 @@
         <%= multiple_select f, :stages_ids, @stages |> Enum.map(&{&1.title, &1.id}), class: "ui fluid search dropdown" %>
       </div>
 
-      <%= submit "Create stream", class: "ui fluid teal submit button" %>
+      <%= submit "Edit stream", class: "ui fluid teal submit button" %>
     <% end %>
   </div>
   <div class="four wide column">

@@ -13,38 +13,21 @@
     </div>
     <div class="seven wide column">
       <h2 class="ui header">Pipeline</h2>
+
       <div class="ui fluid vertical steps">
-        <div class="step">
-          <i class="eyedropper icon"></i>
-          <div class="content">
-            <div class="title">Kafka Ingestion</div>
-            <div class="description">Ingest from Kafka's topic</div>
+        <%= for stg <- @stream.stages do %>
+          <div class="step">
+            <i class="eyedropper icon"></i>
+            <div class="content">
+              <div class="title"><%= stg.title %></div>
+              <div class="description"><%= stg.description %></div>
+            </div>
           </div>
-        </div>
-
-        <div class="disabled step">
-          <div class="content">
-            <div class="title">No store action detected</div>
-          </div>
-        </div>
-
-        <div class="step">
-          <i class="industry icon"></i>
-          <div class="content">
-            <div class="title">Entities cast</div>
-            <div class="description">Normalize Kafka's input</div>
-          </div>
-        </div>
-
-        <div class="step">
-          <i class="sitemap icon"></i>
-          <div class="content">
-            <div class="title">Parquet publish</div>
-          </div>
-        </div>
+        <% end %>
       </div>
+
       <div class="ui inverted center aligned segment">
-        <button class="ui inverted button">Edit Pipeline</button>
+        <%= link("Edit Pipeline", to: stream_path(@conn, :edit, @stream.id), class: "ui inverted button") %>
         <%= link("Flush Pipeline", to: stream_path(@conn, :flush, @stream.id), class: "ui inverted violet button") %>
         <button class="ui inverted teal button">Shock injection</button>
       </div>

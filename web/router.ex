@@ -19,6 +19,7 @@ defmodule Forensic.Router do
     get "/", PageController, :index
     get "/alerts", AlertController, :index
     get "/streams/flush/:id", StreamController, :flush
+    post "/stages/:id/create_mirror_param", StageController, :create_mirror_param
     resources "/changelog", ChangelogController
     resources "/streams", StreamController
     resources "/stages", StageController

@@ -1,14 +1,126 @@
-
-<h1 class="ui header">
-  <i class="big eyedropper icon"></i>
-  <%= @stage.title %>
-</h1>
-
-<div class="ui segment">
-  <div class="title">
-    Script
+<div class="ui vertical stripe segment">
+  <div class="ui middle center aligned stackable grid container">
+    <h1>
+      <%= @stage.title %>
+    </h1>
   </div>
-  <div class="content">
-    <%= @stage.script %>
+
+  <div class="ui grid">
+    <div class="eight wide column">
+      <div class="ui items">
+        <div class="ui item">
+          <div class="image">
+          </div>
+          <div class="content">
+            <h2 class="ui header"><%= @stage.shock_identifier %></h2>
+            <%= @stage.step %> stage
+            <div class="meta">
+              <%= @stage.description %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui statistics middle center aligned container">
+        <div class="statistic">
+          <div class="value">
+            22
+          </div>
+          <div class="label">
+            Faves
+          </div>
+        </div>
+        <div class="statistic">
+          <div class="value">
+            31,200
+          </div>
+          <div class="label">
+            Views
+          </div>
+        </div>
+        <div class="statistic">
+          <div class="value">
+            22
+          </div>
+          <div class="label">
+            Members
+          </div>
+        </div>
+      </div>
+
+
+      <div class="ui inverted center aligned segment">
+        <%= link("Edit", to: stage_path(@conn, :edit, @stage.id), class: "ui inverted button") %>
+      </div>
+
+    </div>
+
+    <div class="eight wide column">
+      <div class="ui segment">
+        <h2 class="ui header">Params</h2>
+
+        <table class="ui inverted teal celled table">
+          <thead>
+            <tr>
+              <th>Param</th>
+              <th>Type</th>
+              <th>Required</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <%= for p <- @stage.params do %>
+              <tr>
+                <td><%= p.title %></td>
+                <td><%= normalize_param_type(p.param_type) %></td>
+                <td><%= p.required? %></td>
+                <td class="center aligned">
+                  <div class="ui small icon buttons">
+                    <button class="white ui button"><i class="configure icon"></i></button>
+                    <button class="red ui button"><i class="remove icon"></i></button>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <h4 class="ui header">New Param</h4>
+        <%= form_for @changeset, stage_path(@conn, :create_mirror_param, @stage.id), [class: "ui form"], fn f -> %>
+          <%= if f.errors != [] do %>
+            <div class="ui error message">
+              <p>Wrong data! :(</p>
+            </div>
+          <% end %>
+
+          <div class="ui field">
+            <div class="ui input">
+              <%= text_input f, :title, placeholder: "title" %>
+            </div>
+            <%= error_tag f, :title %>
+          </div>
+
+          <div class="ui field">
+            <%= select f, :param_type, [{"string", 1}, {"int", 2}, {"double", 3}], class: "ui fluid search dropdown" %>
+          </div>
+
+          <%= submit "Create param", class: "ui fluid teal submit button" %>
+        <% end %>
+
+
+
+
+      </div>
+
+      <div class="ui segment">
+        <div class="title">
+          Script
+        </div>
+        <div class="content">
+          <%= @stage.script %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
