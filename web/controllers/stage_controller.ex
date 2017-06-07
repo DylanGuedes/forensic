@@ -12,7 +12,7 @@ defmodule Forensic.StageController do
   def new(conn, changeset: changeset),
     do: render(conn, "new.html", changeset: changeset)
   def new(conn, _params),
-    do: new(conn, changeset: Stg.Stage.changeset(%Stg{}, %{}))
+    do: new(conn, changeset: Stg.changeset(%Stg{}, %{}))
 
   def create(conn, %{"stage" => stage_params}) do
     changeset = Stg.changeset(%Stg{}, stage_params)

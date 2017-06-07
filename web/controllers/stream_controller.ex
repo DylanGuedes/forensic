@@ -54,9 +54,6 @@ defmodule Forensic.StreamController do
       end
 
     changeset = S.changeset(stream, params)
-    IO.puts "params => "
-    IO.inspect params
-
     case Repo.update(changeset) do
       {:ok, stream} ->
         for stage_id <- params["stages_ids"] do
@@ -103,6 +100,26 @@ defmodule Forensic.StreamController do
 
       {:error, changeset} ->
         edit_params(conn, %{"id" => id, "stage_id" => stage_id})
+    end
+  end
+
+  def shock_injection(conn, %{"id" => id}) do
+    stream = Repo.get(S, id) |> Repo.preload(:stages)
+    injected? = stream.injected?
+    if not injected? do
+      S.shock_injection(stream)
+    end
+    changeset = S.changeset(stream, %{injected?: not injected?})
+    case Repo.update changeset do
+      {:ok, stream} ->
+        conn
+        |> put_flash(:info, "Stream updated!")
+        |> show(%{"id" => stream.id})
+
+      {:error, changeset} ->
+        conn
+        |> put_flash(:error, "Invalid attributes!")
+        |> show(%{"id" => stream.id})
     end
   end
 end

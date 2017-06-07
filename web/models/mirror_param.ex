@@ -8,7 +8,7 @@ defmodule Forensic.MirrorParam do
   schema "mirror_params" do
     field :param_type, :string
     field :title, :string
-    field :required?, :string
+    field :required?, :boolean
     belongs_to :stage, Stg
     has_many :params, SP
 
@@ -17,7 +17,7 @@ defmodule Forensic.MirrorParam do
 
   def changeset(struct, params \\ :empty) do
     struct
-    |> cast(params, [:title, :param_type, :stage_id])
+    |> cast(params, [:title, :required?, :param_type, :stage_id])
     |> validate_required([:title, :param_type, :stage_id])
   end
 end

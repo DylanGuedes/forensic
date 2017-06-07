@@ -1,10 +1,10 @@
 <div class="ui vertical stripe segment">
-  <div class="ui middle center aligned stackable grid container">
-    <div class="row">
-      <div class="eight wide column">
-        <h1 class="ui header"><%= @stream.name %></h1>
-        <p><%= @stream.description %></p>
-      </div>
+  <div class="ui container">
+    <div class="column">
+      <a class="ui <%= ribbon_color(@stream.injected?) %> ribbon label">
+        <%= injected_text?(@stream.injected?) %>
+      </a>
+      <h1 class="ui header"><%= @stream.name %></h1>
     </div>
   </div>
 
@@ -64,8 +64,8 @@
 
       <div class="ui inverted center aligned segment">
         <%= link("Edit Pipeline", to: stream_path(@conn, :edit, @stream.id), class: "ui inverted button") %>
-        <%= link("Flush Pipeline", to: stream_path(@conn, :flush, @stream.id), class: "ui inverted violet button") %>
-        <button class="ui inverted teal button">Shock injection</button>
+        <%= link("Flush", to: stream_path(@conn, :flush, @stream.id), class: "ui inverted violet button") %>
+        <%= link("Shock Injection", to: stream_path(@conn, :shock_injection, @stream.id), class: "ui inverted teal button") %>
       </div>
     </div>
   </div>

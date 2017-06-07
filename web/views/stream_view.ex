@@ -32,4 +32,24 @@ defmodule Forensic.StreamView do
         false
     end
   end
+
+  def ribbon_color(injected?) do
+    case injected? do
+      true ->
+        "green"
+      false ->
+        "red"
+      _ ->
+        "red"
+    end
+  end
+
+  def injected_text?(injected?) do
+    case injected? do
+      true ->
+        "Injected"
+      _ ->
+        "Not injected"
+    end
+  end
 end

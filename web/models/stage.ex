@@ -20,7 +20,7 @@ defmodule Forensic.Stage do
   def step_icons("ingestion"), do: "eyedropper"
   def step_icons("process"), do: "industry"
   def step_icons("publish"), do: "sitemap"
-
+  def step_icons(icon), do: "download"
 
   def changeset(struct, params \\ :empty) do
     struct
