@@ -11,7 +11,8 @@ defmodule Forensic.Factory do
     %Forensic.Stage{
       title: "ingestion stage",
       description: "nice stage",
-      step: "processing"
+      step: "processing",
+      shock_identifier: "niceFunction"
     }
   end
 end

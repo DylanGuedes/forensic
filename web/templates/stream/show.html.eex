@@ -14,13 +14,49 @@
     <div class="seven wide column">
       <h2 class="ui header">Pipeline</h2>
 
-      <div class="ui fluid vertical steps">
+      <div class="ui relaxed divided list">
         <%= for stg <- @stream.stages do %>
-          <div class="step">
-            <i class="eyedropper icon"></i>
-            <div class="content">
-              <div class="title"><%= stg.title %></div>
-              <div class="description"><%= stg.description %></div>
+          <div class="item">
+            <div class="ui grid">
+              <div class="twelve wide column">
+                <i class="eyedropper icon"></i>
+                <div class="content">
+                  <%= link(stg.title, to: stage_path(@conn, :show, stg.id), class: "title") %>
+                  <div class="description"><%= stg.description %></div>
+                </div>
+
+                <%= if has_mirror_params?(stg.id) do %>
+                  <div class="extra">
+                    <h3 class="ui header">Params</h3>
+                    <div class="ui inverted segment">
+                      <div class="ui inverted relaxed divided list">
+                        <%= for p <- related_params(@stream, stg) do %>
+                          <div class="item">
+                            <div class="content">
+                              <div class="header">
+                                <%= p.mirror.title %>
+                              </div>
+                              <%= p.value %>
+                            </div>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+
+              </div>
+
+              <div class="two wide column">
+                <div class="ui icon dropdown button">
+                  <i class="ellipsis vertical icon"></i>
+                  <div class="menu">
+                    <div class="item">
+                      <%= link("Edit Params", to: stream_path(@conn, :edit_params, @stream.id, stg.id)) %>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         <% end %>

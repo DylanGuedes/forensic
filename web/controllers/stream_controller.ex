@@ -5,6 +5,7 @@ defmodule Forensic.StreamController do
   alias Forensic.Repo
   alias Forensic.Stage, as: Stg
   alias Forensic.StreamStage, as: SS
+  alias Forensic.StageParam, as: SP
 
   def index(conn, _params) do
     q = from p in S
@@ -22,8 +23,7 @@ defmodule Forensic.StreamController do
     stages = Map.fetch(stream_params, :stages_ids)
     IO.inspect stages
 
-    case Repo.insert(changeset) do
-      {:ok, stream} ->
+    case Repo.insert(changeset) do {:ok, stream} ->
         index(conn, %{})
 
       {:error, changeset} ->
@@ -34,7 +34,8 @@ defmodule Forensic.StreamController do
   def show(conn, %{"id" => id}) do
     stream = S |> Repo.get(id) |> Repo.preload :stages
     stream_stages = Repo.all SS
-    render(conn, "show.html", %{stream: stream, stream_stages: stream_stages})
+    stream_params = (from u in SP, where: u.stream_id==^id, preload: :mirror) |> Repo.all
+    render(conn, "show.html", %{stream: stream, stream_stages: stream_stages, stream_params: stream_params})
   end
 
   def flush(conn, params) do
@@ -82,6 +83,26 @@ defmodule Forensic.StreamController do
         render(conn, "edit.html", %{changeset: changeset, stream: stream, stages: stages})
       _ ->
         show(conn, %{"id" => id})
+    end
+  end
+
+  def edit_params(conn, %{"id" => id, "stage_id" => stage_id}) do
+    stream = Repo.get S, id
+    stage = Repo.get(Stg, stage_id) |> Repo.preload :params
+    q = (from p in SP, where: p.stage_id==^stage.id and p.stream_id==^stream.id)
+    params = Repo.all q
+    render(conn, "edit_params.html", %{stream: stream, params: params, stage: stage})
+  end
+
+  def configure_param(conn, %{"id" => id, "stage_id" => stage_id, "param_id" => param_id, "stage_param" => stage_param}) do
+    stage_param = Map.merge(%{"stage_id" => stage_id, "stream_id" => id, "mirror_id" => param_id}, stage_param)
+    changeset = SP.changeset(%SP{}, stage_param)
+    case Repo.insert(changeset) do
+      {:ok, prms} ->
+        edit_params(conn, %{"id" => id, "stage_id" => stage_id})
+
+      {:error, changeset} ->
+        edit_params(conn, %{"id" => id, "stage_id" => stage_id})
     end
   end
 end
