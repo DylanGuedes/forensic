@@ -52,4 +52,13 @@ defmodule Forensic.StreamView do
         "Not injected"
     end
   end
+
+  def created_text(created?) do
+    case created? do
+      true ->
+        "Created"
+      _ ->
+        "Not created"
+    end
+  end
 end

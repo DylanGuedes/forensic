@@ -18,6 +18,7 @@ defmodule Forensic.Stream do
   alias Forensic.MirrorParam, as: MP
   alias Forensic.Repo
   alias Forensic.StageParam, as: SP
+  alias Forensic.Stream, as: S
 
   import Ecto.Changeset
 
@@ -34,6 +35,7 @@ defmodule Forensic.Stream do
     field :name, :string
     field :description, :string
     field :injected?, :boolean
+    field :created?, :boolean
     many_to_many :stages, Forensic.Stage, join_through: Forensic.StreamStage
 
     timestamps()
@@ -42,7 +44,7 @@ defmodule Forensic.Stream do
   @spec changeset(t, map) :: t
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :injected?, :description])
+    |> cast(params, [:name, :created?, :injected?, :description])
     |> validate_required([:name])
     |> unique_constraint(:name)
     |> validate_length(:name, [min: 3, max: 120])
@@ -56,7 +58,6 @@ defmodule Forensic.Stream do
     selected_params = (from p in SP, where: p.stream_id == ^stream.id, preload: :stage) |> Repo.all
     for p <- stages do
       file = p.step <> ";"
-      merged_params = %{}
       selected_params =
         (from p in SP, where: p.stage_id==^p.id and p.stream_id==^stream.id, preload: :mirror)
         |> Repo.all
@@ -64,8 +65,39 @@ defmodule Forensic.Stream do
       selected_params = Enum.reduce(selected_params, %{}, fn(param, acc) ->
         Enum.into(%{"#{param.mirror.title}" => param.value}, acc) end)
 
+      selected_params = Map.merge(selected_params, %{
+        "shock_action" => p.shock_identifier, "stream" => String.replace(stream.name, " ", "")
+      })
+
       args = Poison.encode!(selected_params)
-      KafkaEx.produce("mypipeline", 0, file <> args)
+      KafkaEx.produce("new_pipeline_instruction", 0, file <> args)
     end
+  end
+
+  def kafka_create_stream(stream) do
+    args = %{"stream" => String.replace(stream.name, " ", "")} |> Poison.encode!
+    payload = "newStream;"<>args
+    KafkaEx.produce("new_pipeline_instruction", 0, payload)
+    toggle_created_attr(stream)
+  end
+
+  def toggle_created_attr(stream) do
+    changeset = S.changeset(stream, %{"created?" => not stream.created?})
+    Repo.update changeset
+  end
+
+  def create_shock_stream(stream) do
+    created? = stream.created?
+    case created? do
+      true ->
+        toggle_created_attr(stream)
+      false ->
+        kafka_create_stream(stream)
+    end
+  end
+
+  def start_streaming(stream) do
+    payload = %{"stream" => String.replace(stream.name, " ", "")} |> Poison.encode!
+    KafkaEx.produce("new_pipeline_instruction", 0, "start;"<>payload)
   end
 end

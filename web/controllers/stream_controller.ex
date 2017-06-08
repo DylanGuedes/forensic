@@ -21,7 +21,6 @@ defmodule Forensic.StreamController do
   def create(conn, %{"stream" => stream_params}) do
     changeset = S.changeset(%S{}, stream_params)
     stages = Map.fetch(stream_params, :stages_ids)
-    IO.inspect stages
 
     case Repo.insert(changeset) do {:ok, stream} ->
         index(conn, %{})
@@ -121,5 +120,23 @@ defmodule Forensic.StreamController do
         |> put_flash(:error, "Invalid attributes!")
         |> show(%{"id" => stream.id})
     end
+  end
+
+  def stream_creation(conn, %{"id" => id}) do
+    stream = Repo.get(S, id)
+    S.create_shock_stream(stream)
+    show(conn, %{"id" => id})
+  end
+
+  def start_streaming(conn, %{"id" => id}) do
+    stream = Repo.get(S, id)
+    S.start_streaming(stream)
+    show(conn, %{"id" => id})
+  end
+
+  def delete(conn, %{"id" => id}) do
+    stream = Repo.get(S, id)
+    Repo.delete stream
+    index(conn, %{})
   end
 end

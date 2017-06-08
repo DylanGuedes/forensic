@@ -22,6 +22,7 @@ defmodule Forensic.StageController do
         index(conn, %{})
 
       {:error, changeset} ->
+        IO.inspect changeset
         new(conn, changeset: changeset)
     end
   end
