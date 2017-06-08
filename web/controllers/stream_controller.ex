@@ -22,7 +22,9 @@ defmodule Forensic.StreamController do
     changeset = S.changeset(%S{}, stream_params)
     stages = Map.fetch(stream_params, :stages_ids)
 
-    case Repo.insert(changeset) do {:ok, stream} ->
+    case Repo.insert(changeset) do
+      {:ok, stream} ->
+        S.add_stages(stream, Map.fetch(stream_params, :stages_ids))
         index(conn, %{})
 
       {:error, changeset} ->
@@ -44,21 +46,10 @@ defmodule Forensic.StreamController do
 
   def update(conn, %{"id" => id, "stream" => stream_params}) do
     stream = Repo.get(S, id)
-    params =
-      case Map.has_key?(stream_params, :stages_ids) do
-        true ->
-          stream_params
-        false ->
-          Map.merge(%{"stages_ids" => []}, stream_params)
-      end
-
-    changeset = S.changeset(stream, params)
+    changeset = S.changeset(stream, stream_params)
     case Repo.update(changeset) do
       {:ok, stream} ->
-        for stage_id <- params["stages_ids"] do
-          stream_stage = SS.relate(stage_id, stream.id)
-          {:ok, _} = Repo.insert(stream_stage)
-        end
+        S.add_stages(stream, Map.fetch(stream_params, :stages_ids))
 
         conn
         |> put_flash(:info, "Stream updated!")

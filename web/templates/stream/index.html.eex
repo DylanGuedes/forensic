@@ -6,18 +6,16 @@
   <div class="ui divided items">
     <%= for st <- @streams do %>
       <div class="item">
-        <div class="ui tiny image">
-        </div>
         <div class="content">
           <%= link(st.name, to: stream_path(@conn, :show, st.id), class: "header") %>
-          <div class="meta">
-            <span>Kafka</span>
-          </div>
           <div class="description">
             <p><%= st.description %></p>
           </div>
           <div class="extra">
-            <a class="ui basic label">Kafka</a>
+            <div class="ui small buttons">
+              <%= link("Edit", to: stream_path(@conn, :edit, st.id), class: "ui blue basic button") %>
+              <%= link("Delete", to: stream_path(@conn, :delete, st.id), class: "ui red basic button") %>
+            </div>
           </div>
         </div>
       </div>

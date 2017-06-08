@@ -81,11 +81,43 @@ defmodule Forensic.Stream do
     toggle_created_attr(stream)
   end
 
+  @doc """
+  Toggle the boolean value of the `created?` attr.
+
+  ## Parameters
+      - stream : Related stream.
+  
+  ## Examples
+      iex> stream = Repo.get(Forensic.Stream, 1)
+      iex> stream.created?
+      false
+      iex> Forensic.Stream.toggle_created_attr(stream)
+      :ok
+      iex> stream = Repo.get(Forensic.Stream, 1)
+      iex> stream.created?
+      true 
+  """
+  @spec toggle_created_attr(t) :: :ok
   def toggle_created_attr(stream) do
     changeset = S.changeset(stream, %{"created?" => not stream.created?})
     Repo.update changeset
+    :ok
   end
 
+  @doc """
+  Creates Shock stream.
+
+  If the stream is already created, it is destroyed.
+
+  ## Parameters
+      - stream : Related stream.
+
+  ## Examples
+      iex> stream = Repo.get(Forensic.Stream, 1)
+      iex> Forensic.Stream.create_shock_stream(stream)
+      => Kafka's message sent
+  """
+  @spec create_shock_stream(t) :: atom
   def create_shock_stream(stream) do
     created? = stream.created?
     case created? do
@@ -96,8 +128,49 @@ defmodule Forensic.Stream do
     end
   end
 
+  @doc """
+  Tells Shock to start the streaming.
+
+  ## Parameters
+      - stream: Stream that will be started.
+
+  ## Examples
+      iex> stream = Repo.get(Forensic.Stream, 1)
+      Forensic.Stream{...}
+      iex> Forensic.Stream.start_streaming(stream)
+      => Kafka's message sent
+  """
+  @spec start_streaming(t) :: :ok
   def start_streaming(stream) do
     payload = %{"stream" => String.replace(stream.name, " ", "")} |> Poison.encode!
     KafkaEx.produce("new_pipeline_instruction", 0, "start;"<>payload)
+    :ok
+  end
+
+  @doc """
+  Relate every stage_id with the given stream.
+
+  ## Parameters
+      - stream: A stream already inserted in the Repo.
+      - stages_ids: List of stages that will be related.
+
+
+  ## Examples
+      iex> length(Repo.all(Forensic.StreamStage))
+      0
+      iex> Forensic.Stream.add_stages(stream, [1,2,3])
+      :ok
+      iex> length(Repo.all(Forensic.StreamStage))
+      3
+  """
+  @spec add_stages(t, :error) :: nil
+  def add_stages(stream, :error), do: :nil
+  @spec add_stages(t, List.t) :: :ok
+  def add_stages(stream, stages_ids) do
+    for stage_id <- stages_ids do
+      stream_stage = SS.relate(stage_id, stream.id)
+      {:ok, _} = Repo.insert(stream_stage)
+    end
+    :ok
   end
 end
