@@ -15,4 +15,10 @@ defmodule Forensic.Factory do
       shock_identifier: "niceFunction"
     }
   end
+
+  def changelog_factory do
+    %Forensic.Changelog{
+      description: "nice log"
+    }
+  end
 end

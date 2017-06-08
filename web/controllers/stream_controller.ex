@@ -1,4 +1,8 @@
 defmodule Forensic.StreamController do
+  @moduledoc """
+  Handles stream-related requests.
+  """
+
   use Forensic.Web, :controller
 
   alias Forensic.Stream, as: S
@@ -7,6 +11,17 @@ defmodule Forensic.StreamController do
   alias Forensic.StreamStage, as: SS
   alias Forensic.StageParam, as: SP
 
+  @doc """
+  List created streams.
+
+  ## Parameters
+      - conn: Related connection.
+
+  ## Examples
+      iex> build_conn() |> get(:index)
+      {:ok, 200}
+  """
+  @spec index(Plug.Conn.t, Keyword.t) :: Plug.Conn.t
   def index(conn, _params) do
     q = from p in S
     streams = Repo.all q
@@ -39,6 +54,9 @@ defmodule Forensic.StreamController do
     render(conn, "show.html", %{stream: stream, stream_stages: stream_stages, stream_params: stream_params})
   end
 
+  @doc """
+  Flush Shock results.
+  """
   def flush(conn, params) do
     KafkaEx.produce("new_pipeline_instruction", 0, "flush;{}")
     show(conn, params)

@@ -15,7 +15,7 @@ defmodule Forensic.MirrorParam do
     timestamps()
   end
 
-  def changeset(struct, params \\ :empty) do
+  def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:title, :required?, :param_type, :stage_id])
     |> validate_required([:title, :param_type, :stage_id])

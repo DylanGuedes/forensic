@@ -4,6 +4,17 @@ defmodule Forensic.StageController do
   alias Forensic.Stage, as: Stg
   alias Forensic.MirrorParam, as: MP
 
+  @doc """
+  List stages created.
+
+  ## Parameters
+      - conn: Connection
+
+  ## Examples
+      iex> build_conn |> get(:index)
+      {:ok, 200}
+  """
+  @spec index(Plug.Conn.t, Keyword.t) :: Plug.Conn.t
   def index(conn, _) do
     stages = Repo.all Stg, preload: Forensic.Stream
     render conn, "index.html", stages: stages
@@ -22,7 +33,6 @@ defmodule Forensic.StageController do
         index(conn, %{})
 
       {:error, changeset} ->
-        IO.inspect changeset
         new(conn, changeset: changeset)
     end
   end

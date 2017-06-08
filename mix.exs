@@ -7,6 +7,8 @@ defmodule Forensic.Mixfile do
      elixir: "~> 1.2",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
+     test_coverage: [tool: ExCoveralls],
+     preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
@@ -40,6 +42,7 @@ defmodule Forensic.Mixfile do
      {:cowboy, "~> 1.0"},
      {:kafka_ex, "~> 0.6.5"},
      {:ex_machina, "~> 2.0"},
+     {:excoveralls, "~> 0.6", only: :test},
      {:poison, "~> 2.0"}
    ]
   end

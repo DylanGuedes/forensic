@@ -2,7 +2,6 @@ defmodule Forensic.StageControllerTest do
   use Forensic.ConnCase
 
   alias Forensic.Repo
-  alias Forensic.Stage, as: Stg
 
   import Forensic.Factory
 
@@ -16,7 +15,7 @@ defmodule Forensic.StageControllerTest do
     assert html_response(conn, 200) =~ "ingestion"
   end
 
-  test "GET /stages/new" do
+  test "GET /stages/new", %{conn: conn} do
     conn = get conn, "/stages/new"
     assert html_response(conn, 200)
   end
