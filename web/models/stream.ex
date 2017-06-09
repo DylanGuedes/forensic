@@ -19,6 +19,7 @@ defmodule Forensic.Stream do
   alias Forensic.Repo
   alias Forensic.StageParam, as: SP
   alias Forensic.Stream, as: S
+  alias Forensic.StreamStage, as: SS
 
   import Ecto.Changeset
 

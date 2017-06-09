@@ -1,3 +1,11 @@
+<div class="ui breadcrumb">
+  <%= link("Home", to: page_path(@conn, :index), class: "section") %>
+  <i class="right angle icon divider"></i>
+  <%= link("Stages", to: stage_path(@conn, :index), class: "section") %>
+  <i class="right angle icon divider"></i>
+  <span class="section"><%= @stage.title %></span>
+</div>
+
 <div class="ui vertical stripe segment">
   <div class="ui middle center aligned stackable grid container">
     <h1>
@@ -77,8 +85,12 @@
                 <td><%= p.required? %></td>
                 <td class="center aligned">
                   <div class="ui small icon buttons">
-                    <button class="white ui button"><i class="configure icon"></i></button>
-                    <button class="red ui button"><i class="remove icon"></i></button>
+                    <a href="<%= mirror_param_path(@conn, :edit, p.id) %>" class="white ui button">
+                      <i class="configure icon"></i>
+                    </a>
+                    <a href="<%= stage_path(@conn, :remove_param, @stage.id, p.id) %>" class="red ui button">
+                      <i class="remove icon"></i>
+                    </a>
                   </div>
                 </td>
               </tr>
@@ -105,12 +117,15 @@
             <%= select f, :param_type, [{"string", 1}, {"int", 2}, {"double", 3}], class: "ui fluid search dropdown" %>
           </div>
 
+          <div class="ui field">
+            <div class="ui checked checkbox">
+              <%= checkbox f, :required?, class: "checkbox" %>
+              <label>Required?</label>
+            </div>
+          </div>
+
           <%= submit "Create param", class: "ui fluid teal submit button" %>
         <% end %>
-
-
-
-
       </div>
 
       <div class="ui segment">

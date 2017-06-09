@@ -1,0 +1,29 @@
+<h1>Param Edition</h1>
+
+<%= form_for @changeset, mirror_param_path(@conn, :update, @mp.id), [class: "ui form"], fn f -> %>
+  <%= if f.errors != [] do %>
+    <div class="ui error message">
+      <p>Wrong data! :(</p>
+    </div>
+  <% end %>
+
+  <div class="ui field">
+    <div class="ui input">
+      <%= text_input f, :title, placeholder: "title" %>
+    </div>
+    <%= error_tag f, :title %>
+  </div>
+
+  <div class="ui field">
+    <%= select f, :param_type, [{"string", 1}, {"int", 2}, {"double", 3}], class: "ui fluid search dropdown" %>
+  </div>
+
+  <div class="ui field">
+    <div class="ui checked checkbox">
+      <%= checkbox f, :required?, class: "checkbox" %>
+      <label>Required?</label>
+    </div>
+  </div>
+
+  <%= submit "Edit", class: "ui fluid teal submit button" %>
+<% end %>

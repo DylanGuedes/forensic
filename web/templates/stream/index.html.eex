@@ -1,7 +1,12 @@
+<div class="ui breadcrumb">
+  <%= link("Home", to: page_path(@conn, :index), class: "section") %>
+  <i class="right angle icon divider"></i>
+  <span class="section">Streams</span>
+</div>
+
 <div class="ui segment">
   <a class="ui green ribbon label" data-content="New feature! Added recently">New</a>
   <h1 class="ui header">Streams</h1>
-
 
   <div class="ui divided items">
     <%= for st <- @streams do %>
@@ -13,8 +18,8 @@
           </div>
           <div class="extra">
             <div class="ui small buttons">
-              <%= link("Edit", to: stream_path(@conn, :edit, st.id), class: "ui blue basic button") %>
-              <%= link("Delete", to: stream_path(@conn, :delete, st.id), class: "ui red basic button") %>
+              <%= link("Edit", to: stream_path(@conn, :edit, st.id), class: "ui blue button") %>
+              <%= link("Delete", to: stream_path(@conn, :delete, st.id), class: "ui red button") %>
             </div>
           </div>
         </div>

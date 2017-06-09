@@ -90,4 +90,10 @@ defmodule Forensic.StageController do
         |> show(%{"id" => id})
     end
   end
+
+  def remove_param(conn, %{"id" => id, "param_id" => param_id}) do
+    param = Repo.get(MP, param_id)
+    Repo.delete param
+    show(conn, %{"id" => id})
+  end
 end

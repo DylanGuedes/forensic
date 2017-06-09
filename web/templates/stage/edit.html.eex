@@ -1,3 +1,13 @@
+<div class="ui breadcrumb">
+  <%= link("Home", to: page_path(@conn, :index), class: "section") %>
+  <i class="right angle icon divider"></i>
+  <%= link("Stages", to: stage_path(@conn, :index), class: "section") %>
+  <i class="right angle icon divider"></i>
+  <%= link(@stage.title, to: stage_path(@conn, :show, @stage.id), class: "section") %>
+  <i class="right angle icon divider"></i>
+  <span class="section">Edit</span>
+</div>
+
 <div class="ui middle center aligned grid segment">
   <div class="four wide column">
   </div>

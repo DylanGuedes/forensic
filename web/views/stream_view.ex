@@ -61,4 +61,38 @@ defmodule Forensic.StreamView do
         "Not created"
     end
   end
+
+  def check_stage(stream, :creation) do
+    if stream.created? do
+      "completed"
+    else
+      "active"
+    end
+  end
+
+  def check_stage(stream, :injection) do
+    if not stream.created? do
+      "disabled"
+    else
+      if not stream.injected? do
+        "active"
+      else
+        "completed"
+      end
+    end
+  end
+
+  def check_stage(stream, :start) do
+    if stream.created? and stream.injected? do
+      "active"
+    else
+      "disabled"
+    end
+  end
+
+  def required_title(true), do: "R"
+  def required_title(_), do: "O"
+
+  def required_label(true), do: "red"
+  def required_label(_), do: "blue"
 end

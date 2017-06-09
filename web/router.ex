@@ -16,6 +16,7 @@ defmodule Forensic.Router do
   scope "/", Forensic do
     pipe_through :browser # Use the default browser stack
 
+    resources "/stages", StageController
     get "/", PageController, :index
     get "/alerts", AlertController, :index
     get "/streams/flush/:id", StreamController, :flush
@@ -26,9 +27,10 @@ defmodule Forensic.Router do
     get "/streams/:id/stream_creation", StreamController, :stream_creation
     get "/streams/:id/start_streaming", StreamController, :start_streaming
     get "/streams/:id/delete", StreamController, :delete
+    get "/stages/:id/:param_id", StageController, :remove_param
     resources "/changelog", ChangelogController
     resources "/streams", StreamController
-    resources "/stages", StageController
+    resources "/mirror_params", MirrorParamController
   end
 
   # Other scopes may use custom stacks.

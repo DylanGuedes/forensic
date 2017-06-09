@@ -1,80 +1,63 @@
+<div class="ui breadcrumb">
+  <%= link("Home", to: page_path(@conn, :index), class: "section") %>
+  <i class="right angle icon divider"></i>
+  <%= link("Streams", to: stream_path(@conn, :index), class: "section") %>
+  <i class="right angle icon divider"></i>
+  <span class="active section"><%= @stream.name %></span>
+</div>
+
 <div class="ui vertical stripe segment">
   <div class="ui container">
     <div class="column">
-      <%= link(created_text(@stream.created?), to: stream_path(@conn, :stream_creation, @stream.id), class: ribbon_color(@stream.created?)<>" ui ribbon label") %>
 
-      <h1 class="ui header"><%= @stream.name %></h1>
+      <h1 class="ui header center aligned"><%= @stream.name %></h1>
 
-      <%= if @stream.injected? and @stream.created? do %>
-        <%= link("Start streaming", to: stream_path(@conn, :start_streaming, @stream.id), class: "ui button") %>
-      <% end %>
+      <%= render "stream_steps.html", %{conn: @conn, stream: @stream} %>
     </div>
   </div>
+  <div class="ui segment">
+    <h2 class="ui header center aligned">Pipeline</h2>
+    <table class="ui celled table">
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>Description</th>
+          <th>Parameters</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
 
-  <div class="ui grid">
-    <div class="four wide column">
-    </div>
-    <div class="ten wide column">
-      <a class="ui <%= ribbon_color(@stream.injected?) %> ribbon label">
-        <%= injected_text?(@stream.injected?) %>
-      </a>
-
-      <h2 class="ui header">Pipeline</h2>
-
-      <div class="ui relaxed divided list">
+      <tbody>
         <%= for stg <- @stream.stages do %>
-          <div class="item">
-            <div class="ui grid">
-              <div class="twelve wide column">
-                <i class="eyedropper icon"></i>
-                <div class="content">
-                  <%= link(stg.title, to: stage_path(@conn, :show, stg.id), class: "title") %>
-                  <div class="description"><%= stg.description %></div>
-                </div>
-
-                <%= if has_mirror_params?(stg.id) do %>
-                  <div class="extra">
-                    <h3 class="ui header">Params</h3>
-                    <div class="ui inverted segment">
-                      <div class="ui inverted relaxed divided list">
-                        <%= for p <- related_params(@stream, stg) do %>
-                          <div class="item">
-                            <div class="content">
-                              <div class="header">
-                                <%= p.mirror.title %>
-                              </div>
-                              <%= p.value %>
-                            </div>
-                          </div>
-                        <% end %>
-                      </div>
-                    </div>
-                  </div>
-                <% end %>
-
-              </div>
-
-              <div class="two wide column">
-                <div class="ui icon dropdown button">
-                  <i class="ellipsis vertical icon"></i>
-                  <div class="menu">
-                    <div class="item">
-                      <%= link("Edit Params", to: stream_path(@conn, :edit_params, @stream.id, stg.id)) %>
-                    </div>
+          <tr>
+            <td><%= link(stg.title, to: stage_path(@conn, :show, stg.id)) %></td>
+            <td><%= stg.description %></td>
+            <td>
+              <%= for p <- related_params(@stream, stg) do %>
+                <div class="ui list compact menu">
+                  <div class="item">
+                    <div class="floating ui <%= required_label(p.mirror.required?) %> label"><%= required_title(p.mirror.required?) %></div>
+                    <%= p.mirror.title %>
                   </div>
                 </div>
+              <% end %>
+            </td>
+
+            <td>
+              <div class="ui icon buttons">
+                <%= link("Edit Params", to: stream_path(@conn, :edit_params, @stream.id, stg.id), class: "ui button") %>
               </div>
-            </div>
-          </div>
+            </td>
+          </tr>
         <% end %>
-      </div>
+      </tbody>
+    </table>
 
-      <div class="ui inverted center aligned segment">
-        <%= link("Edit Pipeline", to: stream_path(@conn, :edit, @stream.id), class: "ui inverted button") %>
-        <%= link("Flush", to: stream_path(@conn, :flush, @stream.id), class: "ui inverted violet button") %>
-        <%= link("Shock Injection", to: stream_path(@conn, :shock_injection, @stream.id), class: "ui inverted teal button") %>
-        <%= link("Delete Stream", to: stream_path(@conn, :delete, @stream.id), class: "ui red button") %>
-      </div>
+    <div class="ui inverted center aligned segment">
+      <%= link("Edit Pipeline", to: stream_path(@conn, :edit, @stream.id), class: "ui inverted button") %>
+      <%= link("Flush", to: stream_path(@conn, :flush, @stream.id), class: "ui inverted violet button") %>
+      <%= link("Shock Injection", to: stream_path(@conn, :shock_injection, @stream.id), class: "ui inverted teal button") %>
+      <%= link("Delete Stream", to: stream_path(@conn, :delete, @stream.id), class: "ui red button") %>
     </div>
   </div>
 </div>

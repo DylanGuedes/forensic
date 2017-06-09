@@ -1,3 +1,13 @@
+<div class="ui breadcrumb">
+  <%= link("Home", to: page_path(@conn, :index), class: "section") %>
+  <i class="right angle icon divider"></i>
+  <%= link("Streams", to: stream_path(@conn, :index), class: "section") %>
+  <i class="right angle icon divider"></i>
+  <%= link(@stream.name, to: stream_path(@conn, :show, @stream.id), class: "section") %>
+  <i class="right angle icon divider"></i>
+  <span class="section">Edit</span>
+</div>
+
 <div class="ui middle center aligned grid segment">
   <div class="four wide column">
   </div>
