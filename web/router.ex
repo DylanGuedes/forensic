@@ -19,7 +19,6 @@ defmodule Forensic.Router do
     resources "/stages", StageController
     get "/", PageController, :index
     get "/alerts", AlertController, :index
-    get "/streams/flush/:id", StreamController, :flush
     get "/streams/:id/:stage_id/params", StreamController, :edit_params
     post "/stages/:id/create_mirror_param", StageController, :create_mirror_param
     post "/streams/:id/:stage_id/:param_id/configure_param", StreamController, :configure_param
@@ -28,9 +27,11 @@ defmodule Forensic.Router do
     get "/streams/:id/start_streaming", StreamController, :start_streaming
     get "/streams/:id/delete", StreamController, :delete
     get "/stages/:id/:param_id", StageController, :remove_param
+    get "/stage_params/:id/delete_entity", StageParamController, :delete_entity
     resources "/changelog", ChangelogController
     resources "/streams", StreamController
     resources "/mirror_params", MirrorParamController
+    resources "/stage_params", StageParamController
   end
 
   # Other scopes may use custom stacks.

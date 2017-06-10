@@ -68,12 +68,7 @@ function humanize(str) {
 
 channel.on('new_report', payload => {
   console.log(payload)
-  $('#alerts').append("\
-    <a class='ui red image label'>\
-      "+payload["capability"]+"\
-      <div class='detail'>"+payload["value"]+"</div>\
-    </a>\
-  ");
+  $('#alerts').append("<div class='ui card'><div class='content'><div class='header'>"+payload['capability']+"</div> <div class='meta'>"+payload['value']+"</div> </div></div>");
 });
 
 channel.join()

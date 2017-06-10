@@ -1,3 +1,2 @@
-<div class="ui container">
-  <div id="alerts"></div>
+<div class="ui cards" id="alerts">
 </div>

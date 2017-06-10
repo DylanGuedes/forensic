@@ -35,7 +35,6 @@
 
     <div class="ui inverted center aligned segment">
       <%= link("Edit Pipeline", to: stream_path(@conn, :edit, @stream.id), class: "ui inverted button") %>
-      <%= link("Flush", to: stream_path(@conn, :flush, @stream.id), class: "ui inverted violet button") %>
       <%= link("Shock Injection", to: stream_path(@conn, :shock_injection, @stream.id), class: "ui inverted teal button") %>
       <%= link("Delete Stream", to: stream_path(@conn, :delete, @stream.id), class: "ui red button") %>
     </div>

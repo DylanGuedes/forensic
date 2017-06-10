@@ -54,14 +54,6 @@ defmodule Forensic.StreamController do
     render(conn, "show.html", %{stream: stream, stream_stages: stream_stages, stream_params: stream_params})
   end
 
-  @doc """
-  Flush Shock results.
-  """
-  def flush(conn, params) do
-    KafkaEx.produce("new_pipeline_instruction", 0, "flush;{}")
-    show(conn, params)
-  end
-
   def update(conn, %{"id" => id, "stream" => stream_params}) do
     stream = Repo.get(S, id)
     changeset = S.changeset(stream, stream_params)

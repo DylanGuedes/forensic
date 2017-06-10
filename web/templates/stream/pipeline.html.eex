@@ -17,14 +17,13 @@
         <td><%= stg.description %></td>
         <td>
           <%= for p <- related_params(@stream, stg) do %>
-
-            <div class="ui tiny list compact menu">
-              <div class="item">
-                <div class="floating ui <%= required_label(p.mirror.required?) %> label" data-tooltip="<%= required_tooltip(p.mirror.required?) %>"><%= required_title(p.mirror.required?) %></div>
-
-                <div class="activator" data-title="Value" data-content="<%= p.value %>">
-                  <span><%= p.mirror.title %></span>
-                </div>
+            <div class="ui image <%= required_label(p.mirror.required?) %> label">
+              <span class="activator" data-title="Value" data-content="<%= p.value %>"><%= p.mirror.title %></span>
+              <%= link to: stage_param_path(@conn, :delete_entity, p.id), class: "" do %>
+                <i class="delete icon remove-parameter-icon"></i>
+              <% end %>
+              <div class="detail" data-tooltip="<%= required_tooltip(p.mirror.required?) %>">
+                <%= required_title(p.mirror.required?) %>
               </div>
             </div>
           <% end %>
