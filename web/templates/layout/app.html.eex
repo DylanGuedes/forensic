@@ -17,6 +17,19 @@
 
     <main role="main">
       <div class="ui container">
+
+      <%= if get_flash(@conn, :error) do %>
+        <div class="ui red message"><%= get_flash(@conn, :error) %></div>
+      <% end %>
+      <%= if get_flash(@conn, :info) do %>
+        <div class="ui positive message"><%= get_flash(@conn, :info) %>
+          <i class="close icon"></i>
+        </div>
+      <% end %>
+      <%= if get_flash(@conn, :warning) do %>
+        <div class="ui yellow message"><%= get_flash(@conn, :warning) %></div>
+      <% end %>
+
         <%= render @view_module, @view_template, assigns %>
       </div>
     </main>

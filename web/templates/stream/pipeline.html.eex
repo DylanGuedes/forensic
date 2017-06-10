@@ -1,0 +1,39 @@
+<h2 class="ui header center aligned">Pipeline</h2>
+
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Stage</th>
+      <th>Description</th>
+      <th>Parameters</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= for stg <- @stream.stages do %>
+      <tr>
+        <td><%= link(stg.title, to: stage_path(@conn, :show, stg.id)) %></td>
+        <td><%= stg.description %></td>
+        <td>
+          <%= for p <- related_params(@stream, stg) do %>
+
+            <div class="ui tiny list compact menu">
+              <div class="item">
+                <div class="floating ui <%= required_label(p.mirror.required?) %> label" data-tooltip="<%= required_tooltip(p.mirror.required?) %>"><%= required_title(p.mirror.required?) %></div>
+
+                <div class="activator" data-title="Value" data-content="<%= p.value %>">
+                  <span><%= p.mirror.title %></span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </td>
+
+        <td>
+          <%= link("Edit Params", to: stream_path(@conn, :edit_params, @stream.id, stg.id), class: "tiny ui button") %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

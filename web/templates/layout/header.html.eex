@@ -1,6 +1,6 @@
 <div class="ui menu">
   <div class="ui container">
-    <div class="header item">FORENSIC</div>
+    <%= link("FORENSIC", to: page_path(@conn, :index), class: "header item") %>
     <%= link("Alerts", to: "/alerts", class: "item") %>
     <%= link("Streams", to: "/streams", class: "item") %>
     <%= link("Changelog", to: "/changelog", class: "item") %>

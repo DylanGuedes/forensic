@@ -17,7 +17,7 @@
         Stage Editing
       </div>
     </h1>
-    <%= form_for @changeset, stage_path(@conn, :update, @stage), [class: "ui form"], fn f -> %>
+    <%= form_for @changeset, stage_path(@conn, :update, @stage), [class: "ui form stages"], fn f -> %>
       <%= if f.errors != [] do %>
         <div class="ui error message">
           <p>Wrong data! :(</p>
@@ -28,28 +28,24 @@
         <div class="ui input">
           <%= text_input f, :title, placeholder: "title" %>
         </div>
-        <%= error_tag f, :title %>
       </div>
 
       <div class="ui field">
         <div class="ui input">
           <%= text_input f, :shock_identifier, placeholder: "Shock function" %>
         </div>
-        <%= error_tag f, :shock_identifier %>
       </div>
 
       <div class="ui field">
         <div class="ui input">
           <%= textarea  f, :description, placeholder: "description" %>
         </div>
-        <%= error_tag f, :description %>
       </div>
 
       <div class="ui field">
         <div class="ui input">
           <%= textarea  f, :script, placeholder: "script" %>
         </div>
-        <%= error_tag f, :script %>
       </div>
 
       <div class="field">

@@ -21,4 +21,12 @@ defmodule Forensic.Factory do
       description: "nice log"
     }
   end
+
+  def mirror_param_factory do
+    %Forensic.MirrorParam{
+      param_type: "string",
+      title: "niceparam",
+      required?: true
+    }
+  end
 end

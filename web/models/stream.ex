@@ -20,6 +20,7 @@ defmodule Forensic.Stream do
   alias Forensic.StageParam, as: SP
   alias Forensic.Stream, as: S
   alias Forensic.StreamStage, as: SS
+  alias Forensic.Stage, as: Stg
 
   import Ecto.Changeset
 
@@ -167,11 +168,18 @@ defmodule Forensic.Stream do
   @spec add_stages(t, :error) :: nil
   def add_stages(stream, :error), do: :nil
   @spec add_stages(t, List.t) :: :ok
-  def add_stages(stream, stages_ids) do
+  def add_stages(stream, {:ok, stages_ids}) do
     for stage_id <- stages_ids do
       stream_stage = SS.relate(stage_id, stream.id)
       {:ok, _} = Repo.insert(stream_stage)
     end
     :ok
+  end
+
+  def missing_parameters?(stream) do
+    stages_ids = (from u in SS, where: u.stream_id==^stream.id, select: u.stage_id) |> Repo.all
+    mp = (from u in MP, where: u.stage_id in ^stages_ids and u.required?==true, select: u.id) |> Repo.all
+    sp = (from u in SP, where: u.mirror_id in ^mp and u.stream_id==^stream.id, select: u.mirror_id) |> Repo.all
+    Enum.sort(mp) != Enum.sort(sp)
   end
 end

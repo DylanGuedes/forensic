@@ -39,7 +39,7 @@ defmodule Forensic.StreamController do
 
     case Repo.insert(changeset) do
       {:ok, stream} ->
-        S.add_stages(stream, Map.fetch(stream_params, :stages_ids))
+        S.add_stages(stream, Map.fetch(stream_params, "stages_ids"))
         index(conn, %{})
 
       {:error, changeset} ->
@@ -67,8 +67,7 @@ defmodule Forensic.StreamController do
     changeset = S.changeset(stream, stream_params)
     case Repo.update(changeset) do
       {:ok, stream} ->
-        S.add_stages(stream, Map.fetch(stream_params, :stages_ids))
-
+        S.add_stages(stream, Map.fetch(stream_params, "stages_ids"))
         conn
         |> put_flash(:info, "Stream updated!")
         |> show(%{"id" => stream.id})
@@ -76,19 +75,23 @@ defmodule Forensic.StreamController do
       {:error, changeset} ->
         conn
         |> put_flash(:error, "Invalid attributes!")
-        |> edit(changeset: changeset)
+        |> edit(%{"id" => id, changeset: changeset})
     end
   end
 
-  def edit(conn, %{"id" => id}) do
+  def edit(conn, %{"id" => id, changeset: changeset}) do
     case Repo.get(S, id) do
       stream when is_map(stream) ->
-        changeset = S.changeset(stream, %{})
         stages = Repo.all Stg
         render(conn, "edit.html", %{changeset: changeset, stream: stream, stages: stages})
       _ ->
         show(conn, %{"id" => id})
     end
+  end
+  def edit(conn, %{"id" => id}) do
+    stream = Repo.get(S, id)
+    changeset = S.changeset(stream, %{})
+    edit(conn, %{"id" => id, changeset: changeset})
   end
 
   def edit_params(conn, %{"id" => id, "stage_id" => stage_id}) do
@@ -140,7 +143,9 @@ defmodule Forensic.StreamController do
   def start_streaming(conn, %{"id" => id}) do
     stream = Repo.get(S, id)
     S.start_streaming(stream)
-    show(conn, %{"id" => id})
+    conn
+    |> put_flash(:warning, "Your stream started to run!")
+    |> show(%{"id" => id})
   end
 
   def delete(conn, %{"id" => id}) do

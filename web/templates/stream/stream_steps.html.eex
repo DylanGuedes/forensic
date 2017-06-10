@@ -1,23 +1,31 @@
-<div class="ui ordered steps">
-  <div class="<%= check_stage(@stream, :creation) %> step">
-    <div class="content">
-      <%= link("Create Stream", to: stream_path(@conn, :stream_creation, @stream.id), class: "title") %>
-      <div class="description">Create the stream for Shock usage.</div>
+<div class="container">
+  <div class="ui tiny fluid ordered steps">
+    <div class="<%= check_stage(@stream, "1") %> step">
+      <div class="content">
+        <%= link("Create Stream", to: stream_path(@conn, :stream_creation, @stream.id), class: "title") %>
+        <div class="description">Create the stream for Shock usage.</div>
+      </div>
     </div>
-  </div>
 
-  <div class="<%= check_stage(@stream, :injection) %> step">
-    <div class="content">
-      <%= link("Inject pipeline", to: stream_path(@conn, :shock_injection, @stream.id), class: "title") %>
-      <div class="description">Inject stages in Shock's stream.</div>
+    <div class="<%= check_stage(@stream, "2") %> step">
+      <div class="content">
+        <a class="title">Configure Streams</a>
+        <div class="description">Configure stream params to be used by Shock.</div>
+      </div>
     </div>
-  </div>
 
-  <div class="<%= check_stage(@stream, :start) %> step">
-    <div class="content">
-      <%= link("Start streaming", to: stream_path(@conn, :start_streaming, @stream.id), class: "title") %>
-      <div class="description">Start the stream.</div>
+    <div class="<%= check_stage(@stream, "3") %> step">
+      <div class="content">
+        <%= link("Inject pipeline", to: stream_path(@conn, :shock_injection, @stream.id), class: "title") %>
+        <div class="description">Inject stages in Shock's stream.</div>
+      </div>
+    </div>
+
+    <div class="<%= check_stage(@stream, "4") %> step">
+      <div class="content">
+        <%= link("Start streaming", to: stream_path(@conn, :start_streaming, @stream.id), class: "title") %>
+        <div class="description">Start the stream.</div>
+      </div>
     </div>
   </div>
 </div>
-

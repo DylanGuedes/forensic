@@ -15,43 +15,23 @@
       <%= render "stream_steps.html", %{conn: @conn, stream: @stream} %>
     </div>
   </div>
+
   <div class="ui segment">
-    <h2 class="ui header center aligned">Pipeline</h2>
-    <table class="ui celled table">
-      <thead>
-        <tr>
-          <th>Stage</th>
-          <th>Description</th>
-          <th>Parameters</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
 
-      <tbody>
-        <%= for stg <- @stream.stages do %>
-          <tr>
-            <td><%= link(stg.title, to: stage_path(@conn, :show, stg.id)) %></td>
-            <td><%= stg.description %></td>
-            <td>
-              <%= for p <- related_params(@stream, stg) do %>
-                <div class="ui list compact menu">
-                  <div class="item">
-                    <div class="floating ui <%= required_label(p.mirror.required?) %> label"><%= required_title(p.mirror.required?) %></div>
-                    <%= p.mirror.title %>
-                  </div>
-                </div>
-              <% end %>
-            </td>
+    <%= if Forensic.Stream.missing_parameters?(@stream) do %>
+      <a class="activator ui yellow left corner label">
+        <i class="ellipsis vertical icon"></i>
+      </a>
 
-            <td>
-              <div class="ui icon buttons">
-                <%= link("Edit Params", to: stream_path(@conn, :edit_params, @stream.id, stg.id), class: "ui button") %>
-              </div>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+      <div class="ui flowing popup top left transition hidden">
+        <h4>There are required parameters not filled!</h4>
+        <p>
+          You should configure required parameters. Check the "Edit Params" action.
+        </p>
+      </div>
+    <% end %>
+
+    <%= render "pipeline.html", %{conn: @conn, stream: @stream} %>
 
     <div class="ui inverted center aligned segment">
       <%= link("Edit Pipeline", to: stream_path(@conn, :edit, @stream.id), class: "ui inverted button") %>

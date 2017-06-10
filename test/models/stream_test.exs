@@ -5,6 +5,7 @@ defmodule Forensic.StreamTest do
 
   alias Forensic.Stream, as: S
   alias Forensic.StreamStage, as: SS
+  alias Forensic.StageParam, as: SP
 
   @invalid1 %{name: "a", description: ""}
   @invalid2 %{name: String.duplicate("A", 121), description: "its nice rly"}
@@ -31,6 +32,29 @@ defmodule Forensic.StreamTest do
     Repo.insert SS.relate(stage.id, stream.id)
     stream = Forensic.Repo.get(S, stream.id) |> Repo.preload(:stages)
     assert stream.stages==[stage]
+  end
+
+  test "#missing_parameters? should return true for missing parameters" do
+    stream = insert(:stream)
+    stage = insert(:stage)
+    SS.relate(stage.id, stream.id) |> Repo.insert
+    p1 = insert(:mirror_param, %{stage: stage})
+    assert S.missing_parameters?(stream)==true
+  end
+
+  test "#missing_parameters? should return false for non-missing params" do
+    stream = insert(:stream)
+    stage = insert(:stage)
+    SS.relate(stage.id, stream.id) |> Repo.insert
+    m1 = insert(:mirror_param, %{stage: stage})
+    changeset = SP.changeset(%SP{}, %{
+      stream_id: stream.id,
+      stage_id: stage.id,
+      mirror_id: m1.id,
+      value: "my nice param"
+    })
+    Repo.insert(changeset)
+    assert S.missing_parameters?(stream)==false
   end
 
 end

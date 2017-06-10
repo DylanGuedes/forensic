@@ -4,6 +4,7 @@ defmodule Forensic.StreamView do
   alias Forensic.StageParam, as: SP
   alias Forensic.MirrorParam, as: MP
   alias Forensic.Repo
+  alias Forensic.Stream, as: S
 
   import Ecto.Query, only: [from: 2]
 
@@ -62,31 +63,38 @@ defmodule Forensic.StreamView do
     end
   end
 
-  def check_stage(stream, :creation) do
-    if stream.created? do
-      "completed"
-    else
-      "active"
-    end
-  end
+  def check_stage(stream, step) do
+    IO.inspect step
+    cond1 = stream.created?
+    cond2 = not S.missing_parameters?(stream)
+    cond3 = stream.injected?
 
-  def check_stage(stream, :injection) do
-    if not stream.created? do
-      "disabled"
-    else
-      if not stream.injected? do
-        "active"
-      else
-        "completed"
-      end
-    end
-  end
+    steps = %{
+      "0" => true,
+      "1" => cond1,
+      "2" => cond1 and cond2,
+      "3" => cond1 and cond2 and cond3,
+      "4" => false
+    }
 
-  def check_stage(stream, :start) do
-    if stream.created? and stream.injected? do
-      "active"
-    else
-      "disabled"
+    previous_step = String.to_integer(step) |> Kernel.-(1) |> Integer.to_string
+
+    case Map.get(steps, step) do
+      true ->
+        case Map.get(steps, previous_step) do
+          true ->
+            "completed"
+          _ ->
+            "disabled"
+        end
+
+      _ ->
+        case Map.get(steps, previous_step) do
+          true ->
+            "active"
+          _ ->
+            "disabled"
+        end
     end
   end
 
@@ -95,4 +103,7 @@ defmodule Forensic.StreamView do
 
   def required_label(true), do: "red"
   def required_label(_), do: "blue"
+
+  def required_tooltip(true), do: "This param is required!"
+  def required_tooltip(_), do: "This param is optional."
 end
