@@ -75,25 +75,4 @@ defmodule Forensic.StageController do
         |> edit(changeset: changeset)
     end
   end
-
-  def create_mirror_param(conn, %{"id" => id, "mirror_param" => mirror_param}) do
-    prms = Map.merge(%{"stage_id" => id}, mirror_param)
-    changeset = MP.changeset(%MP{}, prms)
-    case Repo.insert(changeset) do
-      {:ok, _} ->
-        conn
-        |> put_flash(:info, "Param created!")
-        |> show(%{"id" => id})
-      {:error, changeset} ->
-        conn
-        |> put_flash(:error, "Invalid param")
-        |> show(%{"id" => id})
-    end
-  end
-
-  def remove_param(conn, %{"id" => id, "param_id" => param_id}) do
-    param = Repo.get(MP, param_id)
-    Repo.delete param
-    show(conn, %{"id" => id})
-  end
 end

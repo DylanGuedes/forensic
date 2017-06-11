@@ -182,4 +182,12 @@ defmodule Forensic.Stream do
     sp = (from u in SP, where: u.mirror_id in ^mp and u.stream_id==^stream.id, select: u.mirror_id) |> Repo.all
     Enum.sort(mp) != Enum.sort(sp)
   end
+
+  def can_configure?([]), do: true
+  def can_configure?(array), do: false
+  def can_configure?(param, stream, stage) do
+    q = (from p in SP, where: p.stream_id == ^stream.id and p.mirror_id == ^param.id)
+    result = Repo.all q
+    can_configure?(result)
+  end
 end

@@ -1,6 +1,6 @@
 <h1>Param Edition</h1>
 
-<%= form_for @changeset, mirror_param_path(@conn, :update, @mp.id), [class: "ui form"], fn f -> %>
+<%= form_for @changeset, stage_mirror_param_path(@conn, :update, @mp.stage.id, @mp.id), [class: "ui form"], fn f -> %>
   <%= if f.errors != [] do %>
     <div class="ui error message">
       <p>Wrong data! :(</p>

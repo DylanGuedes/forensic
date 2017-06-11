@@ -19,7 +19,7 @@
           <%= for p <- related_params(@stream, stg) do %>
             <div class="ui image <%= required_label(p.mirror.required?) %> label">
               <span class="activator" data-title="Value" data-content="<%= p.value %>"><%= p.mirror.title %></span>
-              <%= link to: stage_param_path(@conn, :delete_entity, p.id), class: "" do %>
+              <%= link to: stream_stage_param_path(@conn, :delete, @stream.id, p.id), class: "" do %>
                 <i class="delete icon remove-parameter-icon"></i>
               <% end %>
               <div class="detail" data-tooltip="<%= required_tooltip(p.mirror.required?) %>">
@@ -30,7 +30,7 @@
         </td>
 
         <td>
-          <%= link("Edit Params", to: stream_path(@conn, :edit_params, @stream.id, stg.id), class: "tiny ui button") %>
+          <%= link("Edit Params", to: stream_stage_param_path(@conn, :index, @stream.id, stg.id), class: "tiny ui button") %>
         </td>
       </tr>
     <% end %>

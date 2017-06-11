@@ -16,21 +16,27 @@ defmodule Forensic.Router do
   scope "/", Forensic do
     pipe_through :browser # Use the default browser stack
 
-    resources "/stages", StageController
+    resources "/stages", StageController do
+      resources "/mirror_params", MirrorParamController, only: [:create, :edit, :update]
+      get "/mirror_param/:id/delete", MirrorParamController, :delete
+    end
+
     get "/", PageController, :index
-    get "/alerts", AlertController, :index
-    get "/streams/:id/:stage_id/params", StreamController, :edit_params
-    post "/stages/:id/create_mirror_param", StageController, :create_mirror_param
-    post "/streams/:id/:stage_id/:param_id/configure_param", StreamController, :configure_param
+    resources "/alerts", AlertController, only: [:index]
     get "/streams/:id/shock_injection", StreamController, :shock_injection
     get "/streams/:id/stream_creation", StreamController, :stream_creation
     get "/streams/:id/start_streaming", StreamController, :start_streaming
     get "/streams/:id/delete", StreamController, :delete
-    get "/stages/:id/:param_id", StageController, :remove_param
-    get "/stage_params/:id/delete_entity", StageParamController, :delete_entity
+
     resources "/changelog", ChangelogController
-    resources "/streams", StreamController
-    resources "/mirror_params", MirrorParamController
+
+    resources "/streams", StreamController do
+      resources "/stage_params", StageParamController, only: [:update]
+      get "/stages/:stage_id/stage_params", StageParamController, :index
+      post "/mirror_params/:mirror_param_id", StageParamController, :create
+      get "/stage_param/:id/delete", StageParamController, :delete
+    end
+
     resources "/stage_params", StageParamController
   end
 

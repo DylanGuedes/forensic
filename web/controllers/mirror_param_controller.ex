@@ -9,6 +9,30 @@ defmodule Forensic.MirrorParamController do
     render(conn, "edit.html", %{changeset: changeset, mp: mp})
   end
 
+  def create(conn, %{"stage_id" => stage_id, "mirror_param" => mirror_param}) do
+    prms = Map.merge(%{"stage_id" => stage_id}, mirror_param)
+    changeset = MP.changeset(%MP{}, prms)
+    case Repo.insert(changeset) do
+      {:ok, _} ->
+        conn
+        |> put_flash(:info, "Param created!")
+        |> redirect(to: stage_path(conn, :show, stage_id))
+      {:error, changeset} ->
+        conn
+        |> put_flash(:error, "Invalid param")
+        |> redirect(to: stage_path(conn, :show, stage_id))
+    end
+  end
+
+  def delete(conn, %{"stage_id" => stage_id, "id" => id}) do
+    param = Repo.get(MP, id)
+    Repo.delete param
+
+    conn
+    |> put_flash(:error, "Param destroy'd!")
+    |> redirect(to: stage_path(conn, :show, stage_id))
+  end
+
   def update(conn, %{"id" => id, "mirror_param" => params}) do
     changeset = MP |> Repo.get(id) |> MP.changeset(params)
 

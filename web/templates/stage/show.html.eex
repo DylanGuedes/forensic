@@ -85,10 +85,10 @@
                 <td><%= p.required? %></td>
                 <td class="center aligned">
                   <div class="ui small icon buttons">
-                    <a href="<%= mirror_param_path(@conn, :edit, p.id) %>" class="white ui button">
+                    <a href="<%= stage_mirror_param_path(@conn, :edit, @stage.id, p.id) %>" class="white ui button">
                       <i class="configure icon"></i>
                     </a>
-                    <a href="<%= stage_path(@conn, :remove_param, @stage.id, p.id) %>" class="red ui button">
+                    <a href="<%= stage_mirror_param_path(@conn, :delete, @stage.id, p.id) %>" class="red ui button">
                       <i class="remove icon"></i>
                     </a>
                   </div>
@@ -99,7 +99,7 @@
         </table>
 
         <h4 class="ui header">New Param</h4>
-        <%= form_for @changeset, stage_path(@conn, :create_mirror_param, @stage.id), [class: "ui form"], fn f -> %>
+        <%= form_for @changeset, stage_mirror_param_path(@conn, :create, @stage.id), [class: "ui form"], fn f -> %>
           <%= if f.errors != [] do %>
             <div class="ui error message">
               <p>Wrong data! :(</p>
