@@ -26,7 +26,7 @@
                 <%= Forensic.StageView.normalize_param_type(p.param_type) %>
               </div>
 
-              <%= if Forensic.Stream.can_configure?(p, @stream, @stage) do %>
+              <%= if Forensic.Stream.configuration_pending?(@stream, p) do %>
                 <p><%= p.title %> configuration</p>
                 <%= form_for SP.build(p.id, @stage.id, @stream.id), stream_stage_param_path(@conn, :create, @stream.id, p.id), [class: "ui form"], fn f -> %>
                   <%= if f.errors != [] do %>

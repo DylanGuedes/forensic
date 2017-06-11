@@ -177,17 +177,23 @@ defmodule Forensic.Stream do
   end
 
   def missing_parameters?(stream) do
+    IO.warn("DEPRECATED. This method will be renamed in the future.")
     stages_ids = (from u in SS, where: u.stream_id==^stream.id, select: u.stage_id) |> Repo.all
     mp = (from u in MP, where: u.stage_id in ^stages_ids and u.required?==true, select: u.id) |> Repo.all
     sp = (from u in SP, where: u.mirror_id in ^mp and u.stream_id==^stream.id, select: u.mirror_id) |> Repo.all
     Enum.sort(mp) != Enum.sort(sp)
   end
 
-  def can_configure?([]), do: true
-  def can_configure?(array), do: false
-  def can_configure?(param, stream, stage) do
-    q = (from p in SP, where: p.stream_id == ^stream.id and p.mirror_id == ^param.id)
+  def configuration_pending?([]), do: true
+  def configuration_pending?(array), do: false
+  def configuration_pending?(stream, mp) do
+    q = (from p in SP, where: p.stream_id == ^stream.id and p.mirror_id == ^mp.id)
     result = Repo.all q
-    can_configure?(result)
+    configuration_pending?(result)
+  end
+
+  def related_params(stream, stage) do
+    q = from p in SP, where: p.stream_id==^stream.id and p.stage_id==^stage.id, preload: :mirror
+    Repo.all q
   end
 end

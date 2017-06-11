@@ -37,7 +37,6 @@ defmodule Forensic.Router do
       get "/stage_param/:id/delete", StageParamController, :delete
     end
 
-    resources "/stage_params", StageParamController
   end
 
   # Other scopes may use custom stacks.

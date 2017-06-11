@@ -3,7 +3,7 @@ defmodule Forensic.MirrorParamController do
 
   alias Forensic.MirrorParam, as: MP
 
-  def edit(conn, %{"id" => id}) do
+  def edit(conn, %{"stage_id" => stage_id, "id" => id}) do
     mp = MP |> Repo.get(id) |> Repo.preload(:stage)
     changeset = MP.changeset(mp, %{})
     render(conn, "edit.html", %{changeset: changeset, mp: mp})
@@ -33,8 +33,9 @@ defmodule Forensic.MirrorParamController do
     |> redirect(to: stage_path(conn, :show, stage_id))
   end
 
-  def update(conn, %{"id" => id, "mirror_param" => params}) do
-    changeset = MP |> Repo.get(id) |> MP.changeset(params)
+  def update(conn, %{"id" => id, "stage_id" => stage_id, "mirror_param" => params}) do
+    mp = Repo.get(MP, id)
+    changeset = mp |> MP.changeset(params)
 
     case Repo.update(changeset) do
       {:ok, mp} ->
@@ -46,7 +47,7 @@ defmodule Forensic.MirrorParamController do
       {:error, changeset} ->
         conn
         |> put_flash(:error, "Invalid attributes!")
-        |> edit(%{"id" => id, changeset: changeset})
+        |> edit(%{"id" => id, "stage_id" => stage_id})
     end
   end
 end

@@ -16,7 +16,7 @@
         <td><%= link(stg.title, to: stage_path(@conn, :show, stg.id)) %></td>
         <td><%= stg.description %></td>
         <td>
-          <%= for p <- related_params(@stream, stg) do %>
+          <%= for p <- Forensic.Stream.related_params(@stream, stg) do %>
             <div class="ui image <%= required_label(p.mirror.required?) %> label">
               <span class="activator" data-title="Value" data-content="<%= p.value %>"><%= p.mirror.title %></span>
               <%= link to: stream_stage_param_path(@conn, :delete, @stream.id, p.id), class: "" do %>
