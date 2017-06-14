@@ -1,8 +1,10 @@
 defmodule Forensic.AlertController do
   use Forensic.Web, :controller
 
+  alias Forensic.Report, as: R
+
   def index(conn, _params) do
-    KafkaEx.produce("new_pipeline_instruction", 0, "flush;{}")
-    render(conn, "index.html")
+    reports = R |> Repo.all
+    render(conn, "index.html", %{reports: reports})
   end
 end
