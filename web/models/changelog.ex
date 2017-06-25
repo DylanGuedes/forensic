@@ -16,6 +16,8 @@ defmodule Forensic.Changelog do
 
   import Ecto.Changeset
 
+  use Forensic.AR
+
   @typedoc """
   Changelog struct
 

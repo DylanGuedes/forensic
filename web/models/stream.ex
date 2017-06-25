@@ -24,6 +24,8 @@ defmodule Forensic.Stream do
 
   import Ecto.Changeset
 
+  use Forensic.AR
+
   @typedoc """
   Stream struct
 

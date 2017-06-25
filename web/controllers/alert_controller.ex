@@ -5,7 +5,7 @@ defmodule Forensic.AlertController do
   alias Forensic.Stream, as: S
 
   def index(conn, _params) do
-    reports = R |> Repo.all
+    reports = Forensic.Report.all
     render(conn, "index.html", %{reports: reports})
   end
 

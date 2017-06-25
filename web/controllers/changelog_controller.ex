@@ -4,20 +4,19 @@ defmodule Forensic.ChangelogController do
   alias Forensic.Changelog
 
   def index(conn, _) do
-    q = from p in Changelog
-    changelogs = Repo.all q
+    changelogs = Changelog.all
     render conn, "index.html", changelogs: changelogs
   end
 
   def new(conn, changeset: changeset),
     do: render(conn, "new.html", changeset: changeset)
   def new(conn, _params),
-    do: new(conn, changeset: Changelog.changeset(%Changelog{}, %{}))
+    do: new(conn, changeset: Changelog.build)
 
   def create(conn, %{"changelog" => changelog_params}) do
-    changeset = Changelog.changeset(%Changelog{}, changelog_params)
+    changeset = Changelog.build(changelog_params)
 
-    case Repo.insert(changeset) do
+    case Changelog.save(changeset) do
       {:ok, changelog} ->
         index(conn, %{})
 

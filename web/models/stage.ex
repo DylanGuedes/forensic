@@ -1,6 +1,7 @@
 defmodule Forensic.Stage do
   use Forensic.Web, :model
   use Ecto.Schema
+  use Forensic.AR
 
   alias Forensic.MirrorParam, as: MP
 

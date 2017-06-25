@@ -23,21 +23,20 @@ defmodule Forensic.StreamController do
   """
   @spec index(Plug.Conn.t, Keyword.t) :: Plug.Conn.t
   def index(conn, _params) do
-    q = from p in S
-    streams = Repo.all q
+    streams = S.all
     render conn, "index.html", streams: streams
   end
 
   def new(conn, changeset: changeset),
-    do: render(conn, "new.html", %{changeset: changeset, stages: Repo.all Stg})
+    do: render(conn, "new.html", %{changeset: changeset, stages: Stg.all})
   def new(conn, _params),
-    do: new(conn, changeset: S.changeset(%S{}, %{}))
+    do: new(conn, changeset: S.build)
 
   def create(conn, %{"stream" => stream_params}) do
-    changeset = S.changeset(%S{}, stream_params)
+    changeset = S.build(stream_params)
     stages = Map.fetch(stream_params, :stages_ids)
 
-    case Repo.insert(changeset) do
+    case S.save(changeset) do
       {:ok, stream} ->
         S.add_stages(stream, Map.fetch(stream_params, "stages_ids"))
         index(conn, %{})
@@ -48,8 +47,8 @@ defmodule Forensic.StreamController do
   end
 
   def show(conn, %{"id" => id}) do
-    stream = S |> Repo.get(id) |> Repo.preload :stages
-    stream_stages = Repo.all SS
+    stream = S.find(id) |> Repo.preload :stages
+    stream_stages = SS.all
     stream_params = (from u in SP, where: u.stream_id==^id, preload: :mirror) |> Repo.all
     render(conn, "show.html", %{stream: stream, stream_stages: stream_stages, stream_params: stream_params})
   end

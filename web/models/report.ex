@@ -10,6 +10,8 @@ defmodule Forensic.Report do
     timestamps()
   end
 
+  use Forensic.AR
+
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:uuid, :value, :capability])
