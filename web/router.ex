@@ -21,6 +21,10 @@ defmodule Forensic.Router do
       get "/mirror_param/:id/delete", MirrorParamController, :delete
     end
 
+    get "/streams/flush", StreamController, :flush
+    get "/avg", AlertController, :avg
+    get "/flush_avg", AlertController, :flush_avg
+
     get "/", PageController, :index
     resources "/alerts", AlertController, only: [:index]
     get "/streams/:id/shock_injection", StreamController, :shock_injection

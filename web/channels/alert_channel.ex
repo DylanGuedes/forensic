@@ -7,6 +7,11 @@ defmodule Forensic.AlertChannel do
     {:ok, socket}
   end
 
+  def handle_in("new_avg", payload, socket) do
+    broadcast! socket, "new_avg", payload
+    {:noreply, socket}
+  end
+
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (alert:lobby).
   def handle_in("new_report", payload, socket) do
@@ -15,15 +20,11 @@ defmodule Forensic.AlertChannel do
              |> Map.drop([:timestamp])
 
     changeset = R.changeset(%R{}, params) |> Repo.insert
-    # case Repo.insert(changeset) do
-    #   {:ok, report} ->
-    #     IO.inspect report
-    #
-    #   {:error, changeset} ->
-    #     IO.inspect changeset
-    #     IO.puts "ERROR"
-    # end
-    # broadcast! socket, "new_report", payload
+
+    {:noreply, socket}
+  end
+
+  def handle_in(arg1, payload, socket) do
     {:noreply, socket}
   end
 end

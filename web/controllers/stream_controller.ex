@@ -125,4 +125,12 @@ defmodule Forensic.StreamController do
     Repo.delete stream
     index(conn, %{})
   end
+
+  def flush(conn, _) do
+    Repo.delete_all Forensic.Report
+    KafkaEx.produce("new_pipeline_instruction", 0, "flush;{}")
+
+    conn
+    |> redirect(to: alert_path(conn, :index))
+  end
 end

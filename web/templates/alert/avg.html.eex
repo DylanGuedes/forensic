@@ -1,0 +1,8 @@
+Module => <%= @view_module %>
+Template => <%= @view_template %>
+<h1>Avg Values</h1>
+
+<div id="avg-container" style="width:100%; height:400px;"></div>
+
+<button class="ui button nice">here</button>
+<script src="<%= static_path(@conn, "/js/avg-chart.js") %>"></script>

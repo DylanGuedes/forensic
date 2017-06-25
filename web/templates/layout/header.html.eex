@@ -5,6 +5,7 @@
     <%= link("Streams", to: "/streams", class: "item") %>
     <%= link("Changelog", to: "/changelog", class: "item") %>
     <%= link("Stages", to: "/stages", class: "item") %>
+    <%= link("Avg values", to: "/avg", class: "item") %>
     <div class="right menu">
       <div class="item">
         <div class="ui action left icon input">

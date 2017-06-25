@@ -196,4 +196,9 @@ defmodule Forensic.Stream do
     q = from p in SP, where: p.stream_id==^stream.id and p.stage_id==^stage.id, preload: :mirror
     Repo.all q
   end
+
+  def flush(params) do
+    args = Poison.encode!(params)
+    KafkaEx.produce("new_pipeline_instruction", 0, "flush;"<>args)
+  end
 end

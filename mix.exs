@@ -43,7 +43,8 @@ defmodule Forensic.Mixfile do
      {:kafka_ex, "~> 0.6.5"},
      {:ex_machina, "~> 2.0"},
      {:excoveralls, "~> 0.6", only: :test},
-     {:poison, "~> 2.0"}
+     {:poison, "~> 2.0"},
+     {:httpoison, "~> 0.11.1"}
    ]
   end
 

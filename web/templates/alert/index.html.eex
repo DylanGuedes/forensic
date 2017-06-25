@@ -1,4 +1,5 @@
 <div class="ui blue segment">
+  <%= link("Flush Reports", to: stream_path(@conn, :flush), class: "ui red basic button") %>
   <h1>Latest reports</h1>
   <div class="ui three column grid">
     <%= for r <- @reports do %>
