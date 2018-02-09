@@ -14,6 +14,7 @@ defmodule Forensic.StreamStage do
   """
 
   use Ecto.Schema
+  use Forensic.AR
 
   alias Ecto.Changeset
 

@@ -61,7 +61,8 @@ defmodule Forensic.Stream do
     stages_ids = stages |> Enum.map(fn (item) -> item.id end)
     selected_params = (from p in SP, where: p.stream_id == ^stream.id, preload: :stage) |> Repo.all
     for p <- stages do
-      file = p.step <> ";"
+
+      file = "update_pipeline#"
       selected_params =
         (from p in SP, where: p.stage_id==^p.id and p.stream_id==^stream.id, preload: :mirror)
         |> Repo.all
@@ -80,7 +81,7 @@ defmodule Forensic.Stream do
 
   def kafka_create_stream(stream) do
     args = %{"stream" => String.replace(stream.name, " ", "")} |> Poison.encode!
-    payload = "newStream;"<>args
+    payload = "new_pipeline#"<>args
     KafkaEx.produce("new_pipeline_instruction", 0, payload)
     toggle_created_attr(stream)
   end
@@ -147,7 +148,7 @@ defmodule Forensic.Stream do
   @spec start_streaming(t) :: :ok
   def start_streaming(stream) do
     payload = %{"stream" => String.replace(stream.name, " ", "")} |> Poison.encode!
-    KafkaEx.produce("new_pipeline_instruction", 0, "start;"<>payload)
+    KafkaEx.produce("new_pipeline_instruction", 0, "start_pipeline#"<>payload)
     :ok
   end
 
@@ -201,6 +202,6 @@ defmodule Forensic.Stream do
 
   def flush(params) do
     args = Poison.encode!(params)
-    KafkaEx.produce("new_pipeline_instruction", 0, "flush;"<>args)
+    KafkaEx.produce("new_pipeline_instruction", 0, "flush#"<>args)
   end
 end

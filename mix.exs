@@ -44,6 +44,7 @@ defmodule Forensic.Mixfile do
      {:ex_machina, "~> 2.0"},
      {:excoveralls, "~> 0.6", only: :test},
      {:poison, "~> 2.0"},
+     {:cors_plug, "~> 1.2"},
      {:httpoison, "~> 0.11.1"}
    ]
   end

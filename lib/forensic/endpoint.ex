@@ -38,5 +38,6 @@ defmodule Forensic.Endpoint do
     key: "_forensic_key",
     signing_salt: "jh7ud+7a"
 
+  plug CORSPlug, origin: ["http://localhost:8080"]
   plug Forensic.Router
 end

@@ -44,7 +44,9 @@ defmodule Forensic.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", Forensic do
-  #   pipe_through :api
-  # end
+  scope "/api", Forensic do
+    pipe_through :api
+
+    resources "/tasks", TaskController, only: [:index]
+  end
 end
