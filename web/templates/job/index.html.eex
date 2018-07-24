@@ -1,0 +1,42 @@
+<h1>Jobs</h1>
+
+<table class="ui celled padded table">
+  <thead>
+    <tr>
+      <th class="single line">Job</th>
+      <th>Description</th>
+      <th>Submit</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <%= for {job_name, idx} <- @jobs do %>
+      <tr>
+        <td>
+          <h2 class="ui center aligned header">
+            <%= job_name %>
+          </h2>
+        </td>
+
+        <td class="single line">
+          Job description
+        </td>
+
+        <td>
+          <%= content_tag(:a, class: "ui green icon button", href: job_job_path(@conn, :run, job_name)) do %>
+            <i class="right caret icon"></i>
+          <% end %>
+        </td>
+
+        <td>
+          <button class="ui red icon button">
+            <i class="trash icon"></i>
+          </button>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

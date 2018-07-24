@@ -21,17 +21,20 @@ defmodule Forensic.StreamController do
       iex> build_conn() |> get(:index)
       {:ok, 200}
   """
+  @deprecated "This endpoint will be removed."
   @spec index(Plug.Conn.t, Keyword.t) :: Plug.Conn.t
   def index(conn, _params) do
     streams = S.all
     render conn, "index.html", streams: streams
   end
 
+  @deprecated "This endpoint will be removed."
   def new(conn, changeset: changeset),
     do: render(conn, "new.html", %{changeset: changeset, stages: Stg.all})
   def new(conn, _params),
     do: new(conn, changeset: S.build)
 
+  @deprecated "This endpoint will be removed."
   def create(conn, %{"stream" => stream_params}) do
     changeset = S.build(stream_params)
     stages = Map.fetch(stream_params, :stages_ids)
@@ -46,6 +49,7 @@ defmodule Forensic.StreamController do
     end
   end
 
+  @deprecated "This endpoint will be removed."
   def show(conn, %{"id" => id}) do
     stream = S.find(id) |> Repo.preload :stages
     stream_stages = SS.all
@@ -53,6 +57,7 @@ defmodule Forensic.StreamController do
     render(conn, "show.html", %{stream: stream, stream_stages: stream_stages, stream_params: stream_params})
   end
 
+  @deprecated "This endpoint will be removed."
   def update(conn, %{"id" => id, "stream" => stream_params}) do
     stream = Repo.get(S, id)
     changeset = S.changeset(stream, stream_params)
@@ -70,6 +75,7 @@ defmodule Forensic.StreamController do
     end
   end
 
+  @deprecated "This endpoint will be removed."
   def edit(conn, %{"id" => id, changeset: changeset}) do
     case Repo.get(S, id) do
       stream when is_map(stream) ->
@@ -85,6 +91,7 @@ defmodule Forensic.StreamController do
     edit(conn, %{"id" => id, changeset: changeset})
   end
 
+  @deprecated "This endpoint will be removed."
   def shock_injection(conn, %{"id" => id}) do
     stream = Repo.get(S, id) |> Repo.preload(:stages)
     injected? = stream.injected?
@@ -105,12 +112,14 @@ defmodule Forensic.StreamController do
     end
   end
 
+  @deprecated "This endpoint will be removed."
   def stream_creation(conn, %{"id" => id}) do
     stream = Repo.get(S, id)
     S.create_shock_stream(stream)
     show(conn, %{"id" => id})
   end
 
+  @deprecated "This endpoint will be removed."
   def start_streaming(conn, %{"id" => id}) do
     stream = Repo.get(S, id)
     S.start_streaming(stream)
@@ -119,12 +128,14 @@ defmodule Forensic.StreamController do
     |> show(%{"id" => id})
   end
 
+  @deprecated "This endpoint will be removed."
   def delete(conn, %{"id" => id}) do
     stream = Repo.get(S, id)
     Repo.delete stream
     index(conn, %{})
   end
 
+  @deprecated "This endpoint will be removed."
   def flush(conn, _) do
     Repo.delete_all Forensic.Report
     KafkaEx.produce("new_pipeline_instruction", 0, "flush;{}")

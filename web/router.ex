@@ -16,6 +16,10 @@ defmodule Forensic.Router do
   scope "/", Forensic do
     pipe_through :browser # Use the default browser stack
 
+    resources "/jobs", JobController do
+      get "/run", JobController, :run
+    end
+
     resources "/stages", StageController do
       resources "/mirror_params", MirrorParamController, only: [:create, :edit, :update]
       get "/mirror_param/:id/delete", MirrorParamController, :delete
@@ -48,5 +52,7 @@ defmodule Forensic.Router do
     pipe_through :api
 
     resources "/tasks", TaskController, only: [:index]
+
+    post "/run_job", JobController, :run
   end
 end
