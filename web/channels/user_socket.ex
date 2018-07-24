@@ -4,7 +4,6 @@ defmodule Forensic.UserSocket do
   ## Channels
   # channel "room:*", Forensic.RoomChannel
 
-  channel "alerts:*", Forensic.AlertChannel
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
   # transport :longpoll, Phoenix.Transports.LongPoll

@@ -1,24 +1,3 @@
 <div class="ui message">
   <h1 class="ui header">FORENSIC</h1>
-
-  <p>
-    <div class="ui statistics">
-      <div class="statistic">
-        <div class="value">
-          <%= length(@streams) %>
-        </div>
-        <div class="label">
-          streams
-        </div>
-      </div>
-      <div class="statistic">
-        <div class="value">
-          <%= length(@stages) %>
-        </div>
-        <div class="label">
-          stages
-        </div>
-      </div>
-    </div>
-  </p>
 </div>
