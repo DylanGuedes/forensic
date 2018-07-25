@@ -11,3 +11,8 @@ To start your Phoenix app:
 ```
 MIX_ENV=test mix coveralls
 ```
+
+## Usage
+
+The use is based on the '/api/run_job' endpoint. See the REQUESTS.md
+file for complete examples using Python `requests` package.

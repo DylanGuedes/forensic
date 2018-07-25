@@ -14,7 +14,6 @@ from pyspark.ml.regression import LinearRegression
 
 DEFAULT_DATA_COLLECTOR_URL = "http://data-collector:3000"
 
-
 def extract_schema_string(args):
     capabilities_schema = {}
 
@@ -96,24 +95,18 @@ def get_features(argv):
 def linreg(features, capability, df):
     features_df = df.select(list(map(lambda x: "{0}.{1}".format(capability, x), features[2:])))
     features = features[2:]
-    print("FEATURES DF_____________")
     features_df.show(truncate=False)
-    print("FEATURES DEPOIS DF_____________")
 
     assembler = VectorAssembler(inputCols=features,
             outputCol='features')
     print(features_df.columns)
-    print("columns acima")
-
-    features_df.printSchema()
-    print("schema acima")
 
     assembled_df = assembler.transform(features_df)
     train, test = assembled_df.randomSplit([0.6, 0.4], seed=0)
     lr = LinearRegression(maxIter=10).setLabelCol(features[0]).setFeaturesCol("features")
     model = lr.fit(train)
     testing_summary = model.evaluate(test)
-    return testing_summary.predictions
+    return testing_summary.predictions.select('baths','beds','sq__ft','prediction')
 
 
 if __name__ == '__main__':
@@ -138,4 +131,4 @@ if __name__ == '__main__':
             (df.write.mode('overwrite')
                     .option("header", "true")
                     .format("csv")
-                    .save(publish_strategy["file_name"]))
+                    .save("hdfs://hadoop:9000/model.csv"))

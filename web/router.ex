@@ -23,6 +23,6 @@ defmodule Forensic.Router do
   scope "/api", Forensic do
     pipe_through :api
 
-    post "/run_job", JobController, :run
+    post "/run_job", JobController, :run_job
   end
 end
